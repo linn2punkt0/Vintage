@@ -1,10 +1,8 @@
-// import React, { useState, useEffect } from "react";
-import React from "react";
-// import firebase from "firebase/app";
-// import "firebase/auth";
-// import "firebase/firestore";
-// import "isomorphic-unfetch";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import firebase from "../firebase";
+import { useAuth } from "../context/auth";
 
 const StyledNewUser = styled.div`
   & > form {
@@ -15,46 +13,56 @@ const StyledNewUser = styled.div`
 `;
 
 const NewUser = () => {
-  //   const [user, setUser] = useState(null);
-  //   const [userEmail, setUserEmail] = useState("");
-  //   const [userPassword, setUserPassword] = useState("");
-  //   const [username, setUsername] = useState("");
+  // These are good for now
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [userPassword2, setUserPassword2] = useState("");
+  const [username, setUsername] = useState("");
+  const [userError, setUserError] = useState("");
 
-  //   const handleChange = event => {
-  //     if (event.target.id === "email") {
-  //       setUserEmail(event.target.value);
-  //     }
-  //     if (event.target.id === "password") {
-  //       setUserPassword(event.target.value);
-  //     }
-  //     if (event.target.id === "username") {
-  //       setUsername(event.target.value);
-  //     }
-  //   };
+  // Do something while loading
+  // eslint-disable-next-line no-unused-vars
+  const [loading, setLoading] = useState(false);
 
-  //   const createNewUser = e => {
-  //     e.preventDefault();
-  //     firebase
-  //       .auth()
-  //       .createUserWithEmailAndPassword(userEmail, userPassword)
-  //       .then(cred => {
-  //         const newUser = cred.user;
-  //         // console.log(newUser);
-  //         if (newUser) {
-  //           newUser
-  //             .updateProfile({
-  //               displayName: username
-  //               // photoURL: // some photo url
-  //             })
-  //             .then(s => console.log(s));
-  //         }
-  //       });
-  //   };
+  // Get user if logged in
+  const { authUser } = useAuth();
+
+  // If any fields are empty or if passwords do not match, disable submit-button
+  const isInvalid =
+    userPassword !== userPassword2 ||
+    userPassword === "" ||
+    userEmail === "" ||
+    username === "";
+
+  const resetInput = () => {
+    setUserEmail("");
+    setUserPassword("");
+    setUserPassword2("");
+    setUsername("");
+    setUserError("");
+  };
+
+  const submitForm = async e => {
+    e.preventDefault();
+    setLoading(true);
+    setUserError(null);
+    try {
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(userEmail, userPassword);
+      // redirect user?
+    } catch (err) {
+      setUserError(err);
+    } finally {
+      setLoading(false);
+      resetInput();
+    }
+  };
 
   return (
     <StyledNewUser>
       <h2>Registrera ditt konto här:</h2>
-      {/* {user ? (
+      {authUser ? (
         <h2>Du är redan inloggad</h2>
       ) : (
         <form>
@@ -64,7 +72,7 @@ const NewUser = () => {
             id="username"
             placeholder="username"
             value={username}
-            onChange={e => handleChange(e)}
+            onChange={e => setUsername(e.target.value)}
           />
           <input
             type="text"
@@ -72,7 +80,7 @@ const NewUser = () => {
             id="email"
             placeholder="email"
             value={userEmail}
-            onChange={e => handleChange(e)}
+            onChange={e => setUserEmail(e.target.value)}
           />
           <input
             // Change type to password when finished with login-system
@@ -81,16 +89,27 @@ const NewUser = () => {
             id="password"
             placeholder="password"
             value={userPassword}
-            onChange={e => handleChange(e)}
+            onChange={e => setUserPassword(e.target.value)}
           />
-          <button type="submit" onClick={createNewUser}>
+          <input
+            // Change type to password when finished with login-system
+            type="text"
+            name="password2"
+            id="password2"
+            placeholder="confirm password"
+            value={userPassword2}
+            onChange={e => setUserPassword2(e.target.value)}
+          />
+          <button type="submit" onClick={submitForm} disabled={isInvalid}>
             Registrera ny användare
           </button>
-          <Link href="/login" as="/logga-in">
+          <Link to="/logga-in">
             <button type="button">Har du redan ett konto?</button>
           </Link>
         </form>
-      )} */}
+      )}
+
+      {userError && <p>{userError.message}</p>}
     </StyledNewUser>
   );
 };

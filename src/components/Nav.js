@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-// import { withRouter } from "react-router";
 import { NavLink } from "react-router-dom";
+import firebase from "../firebase";
+import { useAuth } from "../context/auth";
 
 const StyledNav = styled.div`
   width: 100vw;
@@ -28,25 +29,39 @@ const UnderLinedMenu = styled.div`
   text-align: center;
 `;
 
+const LogoutButton = styled.button`
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const Nav = () => {
+  const { authUser } = useAuth();
+
   return (
     <StyledNav>
-      {/* <BrowserRouter> */}
       <UnderLinedMenu>
         <NavLink to="/vintageskola">Vintageskola</NavLink>
         <NavLink to="/material-och-tvattrad">Material & Tvättråd</NavLink>
       </UnderLinedMenu>
 
-      <NavLink to="/index" as="/">
+      <NavLink to="/">
         <StyledLogo src="/images/LogoTest4.png" alt="logo" />
       </NavLink>
 
       <UnderLinedMenu>
         <NavLink to="/vintagewiki">VintageWiki</NavLink>
         <NavLink to="/om-vintage-sverige">Om Vintage Sverige</NavLink>
-        <NavLink to="/logga-in">Logga in</NavLink>
+        {!authUser ? (
+          <NavLink to="/logga-in">Logga in</NavLink>
+        ) : (
+          <LogoutButton type="button" onClick={() => firebase.auth().signOut()}>
+            Logga ut
+          </LogoutButton>
+        )}
       </UnderLinedMenu>
-      {/* </BrowserRouter> */}
     </StyledNav>
   );
 };
