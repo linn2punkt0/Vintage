@@ -1,3 +1,15 @@
+# Vintage-Sverige
+<img src="https://media.giphy.com/media/14wkpEWwjdUOv6/giphy.gif"/>
+This is a vintage site where you can find events, and more vintage related things.
+
+Final school project for WU18, Yrgo.
+Built with React and Firebase.
+
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -66,5 +78,3 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-
-# Vintage
