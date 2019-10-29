@@ -15,6 +15,11 @@ const AddWiki = () => {
   // Get user if logged in
   const { authUser } = useAuth();
 
+  const resetForm = () => {
+    setWikiWord("");
+    setWikiDescription("");
+  };
+
   // If any fields are empty disable submit-button
   const isInvalid = wikiWord === "" || wikiDescription === "";
 
@@ -34,6 +39,7 @@ const AddWiki = () => {
         })
         .then(function() {
           console.log("Document successfully written!");
+          resetForm();
         })
         .catch(function(error) {
           console.error("Error writing document: ", error);
