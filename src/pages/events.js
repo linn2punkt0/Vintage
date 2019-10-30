@@ -21,7 +21,7 @@ const Events = () => {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          tempArray.push(doc.data());
+          tempArray.push({ id: doc.id, ...doc.data() });
         });
         setEvents(tempArray);
       });
@@ -31,7 +31,7 @@ const Events = () => {
     <StyledEvents>
       <h2>Här hittar du alla events!</h2>
       {events.map(event => (
-        <EventOverview key={event} event={event} />
+        <EventOverview key={event.id} event={event} />
       ))}
 
       {authUser ? (
