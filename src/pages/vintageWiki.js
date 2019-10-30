@@ -24,24 +24,28 @@ const VintageWiki = () => {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          tempArray.push(doc.data());
+          tempArray.push({ id: doc.id, ...doc.data() });
         });
         setWiki(tempArray);
       });
   }, []);
 
+  const addNewItem = object => {
+    setWiki([...wiki, object]);
+  };
+
   return (
     <StyledVintageWiki>
       <h2>Här kommer det bli en VintageWiki.</h2>
       {wiki.map(item => (
-        <StyledItem key={item}>
+        <StyledItem key={item.id}>
           <h3>{item.name}</h3>
           <h4>{item.description}</h4>
         </StyledItem>
       ))}
 
       {authUser ? (
-        <AddWiki />
+        <AddWiki addNewItem={addNewItem} />
       ) : (
         <h4>Logga in för att kunna lägga till nya ord i VintageWikin.</h4>
       )}

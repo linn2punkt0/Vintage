@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import app from "../firebase";
 import { useAuth } from "../context/auth";
+import Button from "./Button";
 
 const StyledAddWiki = styled.div``;
 
-const AddWiki = () => {
+const AddWiki = ({ addNewItem }) => {
   const db = app.firestore();
   const [wikiWord, setWikiWord] = useState("");
   const [wikiDescription, setWikiDescription] = useState("");
@@ -40,6 +41,12 @@ const AddWiki = () => {
         .then(function() {
           console.log("Document successfully written!");
           resetForm();
+          addNewItem({
+            name: wikiWord,
+            description: wikiDescription,
+            addedByUser: authUser.email,
+            id: wikiWord
+          });
         })
         .catch(function(error) {
           console.error("Error writing document: ", error);
@@ -65,9 +72,9 @@ const AddWiki = () => {
         value={wikiDescription}
         onChange={e => setWikiDescription(e.target.value)}
       />
-      <button type="submit" onClick={addNewWiki} disabled={isInvalid}>
+      <Button type="submit" onClick={addNewWiki} disabled={isInvalid}>
         Lägg till
-      </button>
+      </Button>
     </StyledAddWiki>
   );
 };

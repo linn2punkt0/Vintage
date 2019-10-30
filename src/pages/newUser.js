@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import firebase from "../firebase";
 import { useAuth } from "../context/auth";
+import Button from "../components/Button";
 
 const StyledNewUser = styled.div`
   & > form {
@@ -100,11 +101,11 @@ const NewUser = () => {
             value={userPassword2}
             onChange={e => setUserPassword2(e.target.value)}
           />
-          <button type="submit" onClick={submitForm} disabled={isInvalid}>
+          <Button type="submit" onClick={submitForm} disabled={isInvalid}>
             Registrera ny användare
-          </button>
+          </Button>
           <Link to="/logga-in">
-            <button type="button">Har du redan ett konto?</button>
+            <Button type="button">Har du redan ett konto?</Button>
           </Link>
         </form>
       )}

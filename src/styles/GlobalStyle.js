@@ -10,6 +10,8 @@ const GlobalStyle = createGlobalStyle`
   --bg-color: #fffdfa;
   --font-color: black;
   --main-accent-color: pink;
+  --primary-button-color: #4494bd;
+  --light-text-color: white;
 
     /* Fonts */
   --header-font: "Great vibes";

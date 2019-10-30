@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import firebase from "../firebase";
 import { useAuth } from "../context/auth";
+import Button from "../components/Button";
 
 const StyledLogIn = styled.div``;
 
@@ -52,9 +53,9 @@ const LogIn = () => {
         {authUser ? (
           <>
             <h2>Du är inloggad</h2>
-            <button type="submit" onClick={logout}>
+            <Button type="submit" onClick={logout}>
               Logga ut
-            </button>
+            </Button>
           </>
         ) : (
           <>
@@ -74,11 +75,11 @@ const LogIn = () => {
               value={userPassword}
               onChange={e => setUserPassword(e.target.value)}
             />
-            <button type="submit" onClick={login} disabled={isInvalid}>
+            <Button type="submit" onClick={login} disabled={isInvalid}>
               Logga in
-            </button>
+            </Button>
             <Link to="/registrera-dig">
-              <button type="button">Ny användare</button>
+              <Button type="button">Ny användare</Button>
             </Link>
           </>
         )}
