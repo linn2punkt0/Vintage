@@ -85,7 +85,7 @@ const NewUser = () => {
           />
           <input
             // Change type to password when finished with login-system
-            type="text"
+            type="password"
             name="password"
             id="password"
             placeholder="password"
@@ -94,7 +94,7 @@ const NewUser = () => {
           />
           <input
             // Change type to password when finished with login-system
-            type="text"
+            type="password"
             name="password2"
             id="password2"
             placeholder="confirm password"
