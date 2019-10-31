@@ -1,14 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
-// import app from "../firebase";
+import app from "../firebase";
 import "react-datepicker/dist/react-datepicker.css";
 import { useAuth } from "../context/auth";
+import useDebounce from "../hooks/useDebounce";
+import Button from "./Button";
+import Input from "./Input";
 
-const StyledAddEvents = styled.div``;
+const StyledAddEvents = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  .DateInput {
+    min-height: 40px;
+    height: ${({ height }) => height || "40px"};
+    min-width: 20em;
+    border: solid 1px black;
+    border-radius: 5px;
+    padding: 10px;
+    color: var(--dark-text-color);
+    background-color: var(--light-text-color);
+  }
+
+  select {
+    min-height: 40px;
+    height: ${({ height }) => height || "40px"};
+    min-width: 20em;
+    border: solid 1px black;
+    border-radius: 5px;
+    padding: 10px;
+    color: var(--dark-text-color);
+    background-color: var(--light-text-color);
+  }
+`;
+
+const StyledEventForm = styled.div`
+  /* height: 70vh; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2em;
+  margin: 2em;
+  border: solid 1px black;
+  border-radius: 5px;
+
+  input,
+  select {
+    margin: 0 0 1em 0;
+  }
+`;
 
 const AddEvents = () => {
-  //   const db = app.firestore();
+  const db = app.firestore();
   const [eventName, setEventName] = useState("");
   const [eventCity, setEventCity] = useState("");
   const [eventAddress, setEventAddress] = useState("");
@@ -16,131 +63,167 @@ const AddEvents = () => {
   const [eventEnd, setEventEnd] = useState("");
   const [eventRegion, setEventRegion] = useState("");
   const [eventDescription, setEventDescription] = useState("");
+  const [auto, setAuto] = useState([]);
+  const [regions, setRegions] = useState([]);
+
+  const debouncedAddress = useDebounce(eventAddress, 500);
 
   // Get user if logged in
   const { authUser } = useAuth();
 
-  //   const resetForm = () => {
-  //     setEventName("");
-  //     setEventCity("");
-  //     setEventAddress("");
-  //     setEventStart("");
-  //     setEventEnd("");
-  //     setEventRegion("");
-  //     setEventDescription("");
-  //   };
+  useEffect(() => {
+    const tempArray = [];
+
+    db.collection("regions")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          tempArray.push({ id: doc.id, ...doc.data() });
+        });
+        setRegions(tempArray);
+      });
+  }, []);
+
+  const resetForm = () => {
+    setEventName("");
+    setEventCity("");
+    setEventAddress("");
+    setEventStart("");
+    setEventEnd("");
+    setEventRegion("");
+    setEventDescription("");
+  };
 
   // If any fields are empty disable submit-button
   const isInvalid = eventName === "" || eventStart === "";
 
+  const getAddressSuggestions = () => {
+    fetch(`/.netlify/functions/autocomplete?input=${eventAddress}`, {
+      headers: { accept: "Accept: application/json" }
+    })
+      .then(response => response.json())
+      .then(data =>
+        data.msg.predictions.forEach(prediction => {
+          setAuto([...auto, prediction.description]);
+        })
+      );
+  };
+
+  auto.forEach(prediction => {
+    console.log(`this is auto: ${prediction}`);
+  });
+  console.log(regions);
+
+  // Add new event to firebase, but first validate, format and add userInfo
   const addNewEvent = e => {
     e.preventDefault();
-
-    // Validate and format data here:
-
     if (authUser) {
       // Add data to firebase here:
-      //   db.collection("events")
-      //     .doc(eventName + eventStart)
-      //     .set({
-      //       name: eventName.charAt(0).toUpperCase() + eventName.slice(1),
-      //       description: eventDescription,
-      //       city: eventCity.charAt(0).toUpperCase() + eventCity.slice(1),
-      //       region: eventRegion.charAt(0).toUpperCase() + eventRegion.slice(1),
-      //       address: eventAddress,
-      //       location: eventAddress,
-      //       startDate: new Date(eventStart).getTime(),
-      //       endDate: new Date(eventEnd).getTime(),
-      //       addedByUser: authUser.email
-      //     })
-      //     .then(function() {
-      //       console.log("Document successfully written!");
-      //       resetForm();
-      //     })
-      //     .catch(function(error) {
-      //       console.error("Error writing document: ", error);
-      //     });
-
-      console.log(
-        eventName.charAt(0).toUpperCase() + eventName.slice(1),
-        eventCity,
-        eventAddress,
-        eventStart,
-        eventEnd,
-        eventRegion,
-        eventDescription
-      );
+      db.collection("events")
+        .doc(eventName + eventStart)
+        .set({
+          name: eventName.charAt(0).toUpperCase() + eventName.slice(1),
+          description: eventDescription,
+          city: eventCity.charAt(0).toUpperCase() + eventCity.slice(1),
+          region: eventRegion.charAt(0).toUpperCase() + eventRegion.slice(1),
+          address: eventAddress,
+          location: eventAddress,
+          startDate: new Date(eventStart).getTime(),
+          endDate: new Date(eventEnd).getTime(),
+          addedByUser: authUser.email
+        })
+        .then(function() {
+          console.log("Document successfully written!");
+          resetForm();
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
+        });
     }
   };
 
-  console.log(new Date(eventStart).getTime());
+  useEffect(() => {
+    if (debouncedAddress) {
+      getAddressSuggestions();
+    }
+  }, [debouncedAddress]);
 
   return (
     <StyledAddEvents>
-      <h2>Lägg till ett nytt event</h2>
-      <input
-        type="text"
-        name="name"
-        id="name"
-        placeholder="namn på eventet"
-        value={eventName}
-        onChange={e => setEventName(e.target.value)}
-      />
-      <input
-        type="text"
-        name="description"
-        id="description"
-        placeholder="beskrivning"
-        value={eventDescription}
-        onChange={e => setEventDescription(e.target.value)}
-      />
-      <input
-        type="text"
-        name="address"
-        id="address"
-        placeholder="adress"
-        value={eventAddress}
-        onChange={e => setEventAddress(e.target.value)}
-      />
-      <input
-        type="text"
-        name="city"
-        id="city"
-        placeholder="stad"
-        value={eventCity}
-        onChange={e => setEventCity(e.target.value)}
-      />
-      <input
-        type="text"
-        name="region"
-        id="region"
-        placeholder="region"
-        value={eventRegion}
-        onChange={e => setEventRegion(e.target.value)}
-      />
-      <DatePicker
-        selected={eventStart || ""}
-        onChange={date => setEventStart(date)}
-        showTimeSelect
-        timeFormat="HH:mm"
-        timeIntervals={15}
-        timeCaption="time"
-        dateFormat="d MMM yyyy, HH:mm"
-        placeholderText="Fyll i sluttid och datum"
-      />
-      <DatePicker
-        selected={eventEnd || ""}
-        onChange={date => setEventEnd(date)}
-        showTimeSelect
-        timeFormat="HH:mm"
-        timeIntervals={15}
-        timeCaption="time"
-        dateFormat="d MMM yyyy, HH:mm"
-        placeholderText="Fyll i sluttid och datum"
-      />
-      <button type="submit" onClick={addNewEvent} disabled={isInvalid}>
-        Lägg till event
-      </button>
+      <StyledEventForm>
+        <h2>Lägg till ett nytt event</h2>
+        <Input
+          type="text"
+          name="name"
+          id="name"
+          placeholder="Namn på eventet"
+          value={eventName}
+          onChange={e => setEventName(e.target.value)}
+        />
+        <Input
+          type="text"
+          name="description"
+          id="description"
+          placeholder="Beskrivning"
+          value={eventDescription}
+          onChange={e => setEventDescription(e.target.value)}
+        />
+        <Input
+          type="text"
+          name="address"
+          id="address"
+          placeholder="Adress"
+          value={eventAddress}
+          onChange={e => setEventAddress(e.target.value)}
+        />
+        <Input
+          type="text"
+          name="city"
+          id="city"
+          placeholder="Stad"
+          value={eventCity}
+          onChange={e => setEventCity(e.target.value)}
+        />
+        <select
+          type="text"
+          name="region"
+          id="region"
+          placeholder="Region"
+          value={eventRegion}
+          onChange={e => setEventRegion(e.target.value)}
+        >
+          {regions.map(region => (
+            <option key={region.id} value={region.name}>
+              {region.name}
+            </option>
+          ))}
+        </select>
+        <DatePicker
+          selected={eventStart || ""}
+          onChange={date => setEventStart(date)}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          timeCaption="time"
+          dateFormat="d MMM yyyy, HH:mm"
+          placeholderText="Fyll i starttid och datum"
+          className="DateInput"
+        />
+        <DatePicker
+          selected={eventEnd || ""}
+          onChange={date => setEventEnd(date)}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          timeCaption="time"
+          dateFormat="d MMM yyyy, HH:mm"
+          placeholderText="Fyll i sluttid och datum"
+          className="DateInput"
+        />
+        <Button type="submit" onClick={addNewEvent} disabled={isInvalid}>
+          Lägg till event
+        </Button>
+      </StyledEventForm>
     </StyledAddEvents>
   );
 };
