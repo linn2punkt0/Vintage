@@ -38,7 +38,6 @@ const StyledAddEvents = styled.div`
 `;
 
 const StyledEventForm = styled.div`
-  /* height: 70vh; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -114,18 +113,17 @@ const AddEvents = () => {
   });
   console.log(regions);
 
-  // Add new event to firebase, but first validate, format and add userInfo
   const addNewEvent = e => {
     e.preventDefault();
     if (authUser) {
-      // Add data to firebase here:
+      // Add data to firebase here, validate and format data in the process
       db.collection("events")
         .doc(eventName + eventStart)
         .set({
           name: eventName.charAt(0).toUpperCase() + eventName.slice(1),
           description: eventDescription,
           city: eventCity.charAt(0).toUpperCase() + eventCity.slice(1),
-          region: eventRegion.charAt(0).toUpperCase() + eventRegion.slice(1),
+          region: eventRegion,
           address: eventAddress,
           location: eventAddress,
           startDate: new Date(eventStart).getTime(),

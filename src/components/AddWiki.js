@@ -52,7 +52,7 @@ const AddWiki = ({ addNewItem }) => {
       db.collection("vintageWiki")
         .doc(wikiWord)
         .set({
-          name: wikiWord,
+          name: wikiWord.charAt(0).toUpperCase() + wikiWord.slice(1),
           description: wikiDescription,
           addedByUser: authUser.email
         })
