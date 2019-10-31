@@ -31,6 +31,7 @@ const UnderLinedMenu = styled.div`
 
 const LogoutButton = styled.button`
   border: none;
+  background-color: var(--bg-color);
 
   &:hover {
     cursor: pointer;
