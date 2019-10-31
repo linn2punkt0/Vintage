@@ -1,12 +1,105 @@
 import React from "react";
 import styled from "styled-components";
 
-const StyledAbout = styled.div``;
+const StyledAbout = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const StyledAboutSiteBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2em;
+  margin: 2em;
+  border: solid 1px black;
+  border-radius: 5px;
+`;
+
+const StyledContributorsBlock = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2em;
+  margin: 2em;
+  border: solid 1px black;
+  border-radius: 5px;
+`;
+
+const StyledContributor = styled.div`
+  width: 30vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1em;
+  border: solid 1px black;
+  border-radius: 5px;
+
+  img {
+    width: 200px;
+    border-radius: 50%;
+  }
+  h3 {
+    margin: 0.5em;
+  }
+  > * {
+    margin: 0.2em;
+  }
+  a {
+    font-weight: 600;
+    color: var(--main-accent-color);
+  }
+`;
 
 const About = () => {
   return (
     <StyledAbout>
-      <h2>Här kan du läsa om sidan och de som varit med och skapat den.</h2>
+      <h2>Om Vintage Sverige</h2>
+      <StyledAboutSiteBlock>
+        <p>
+          Vintage Sverige är en hemsida för dig som älskar Vintage, vill lära
+          dig mer om det och hitta event och mässor där du kan njuta av vackra
+          kläder och träffa likasinnade.
+        </p>
+        <p>
+          Sidan är under konstruktion och därför kommer tyvärr inte alla sidor i
+          menyn att ha något innehåll ännu, men finns där för att visa på vad
+          som komma skall. I första releasen kommer denna sida ha fokus på att
+          ni som användare ska kunna lägga till och hitta event. Det finns även
+          en Beta-version av VitnageWiki, en ordlista för allt som har med
+          Vintage att göra, denna ska förfinas och kommer i framtiden innehålla
+          mer än bara en beskrivning om varje ord.
+        </p>
+        <p>
+          Har du ideér på grejer som skulle kunna bli bättre på sidan eller vill
+          du kanske bidra med innehåll så som artiklar, text till Vintageskolan
+          eller en bloggpost? Kontakta mig så ska vi kika på om det är något vi
+          kan lösa!
+        </p>
+      </StyledAboutSiteBlock>
+      <h2>Vi som bidrar till Vintage Sverige</h2>
+      <StyledContributorsBlock>
+        <StyledContributor>
+          <img src="/images/linn2.jpg" alt="profile" />
+          <h3>Linn Johansson</h3>
+          <h4>Grundare - Webbutvecklare</h4>
+          <p>
+            Linn heter jag, pluggar webbutveckling och älskar
+            vintage-klänningar. Den här hemsidan är mitt examensarbete.
+          </p>
+          <p>
+            <a href="https://linnjohansson.dev/">Min webbutvecklar-portfolio</a>
+          </p>
+          <p>
+            <a href="https://www.instagram.com/linn2.0/">Min instagram</a>
+          </p>
+        </StyledContributor>
+      </StyledContributorsBlock>
     </StyledAbout>
   );
 };

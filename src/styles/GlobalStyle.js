@@ -8,9 +8,9 @@ const GlobalStyle = createGlobalStyle`
 
     /* Colors */
   --bg-color: #fffdfa;
-  --font-color: black;
-  --main-accent-color: pink;
+  --main-accent-color: #397fa3;
   --primary-button-color: #4494bd;
+  --dark-text-color: black;
   --light-text-color: white;
 
     /* Fonts */
@@ -23,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     background-color: var(--bg-color);
-    color: var(--black-font);
+    color: var(--dark-text-color);
     font-family: var(--paragraph-font); 
     display: block;
     margin: 0;
