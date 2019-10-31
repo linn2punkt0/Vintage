@@ -4,8 +4,25 @@ import { Link } from "react-router-dom";
 import firebase from "../firebase";
 import { useAuth } from "../context/auth";
 import Button from "../components/Button";
+import Input from "../components/Input";
 
-const StyledLogIn = styled.div``;
+const StyledLogIn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledLoginForm = styled.div`
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2em;
+  border: solid 1px black;
+  border-radius: 5px;
+`;
 
 const LogIn = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -46,20 +63,34 @@ const LogIn = () => {
     }
   };
 
+  const resetPassword = async e => {
+    e.preventDefault();
+    firebase
+      .auth()
+      .sendPasswordResetEmail(userEmail)
+      .then(function() {
+        console.log("Success");
+      })
+      // eslint-disable-next-line no-unused-vars
+      .catch(function(error) {
+        console.log("not working");
+      });
+  };
+
   return (
     <StyledLogIn>
-      <h2>Logga in här:</h2>
-      <div>
-        {authUser ? (
-          <>
-            <h2>Du är inloggad</h2>
-            <Button type="submit" onClick={logout}>
-              Logga ut
-            </Button>
-          </>
-        ) : (
-          <>
-            <input
+      {authUser ? (
+        <>
+          <h2>Du är inloggad</h2>
+          <Button type="submit" onClick={logout}>
+            Logga ut
+          </Button>
+        </>
+      ) : (
+        <>
+          <h2>Logga in här:</h2>
+          <StyledLoginForm>
+            <Input
               type="text"
               name="email"
               id="email"
@@ -67,7 +98,7 @@ const LogIn = () => {
               value={userEmail}
               onChange={e => setUserEmail(e.target.value)}
             />
-            <input
+            <Input
               type="password"
               name="password"
               id="password"
@@ -78,12 +109,19 @@ const LogIn = () => {
             <Button type="submit" onClick={login} disabled={isInvalid}>
               Logga in
             </Button>
-            <Link to="/registrera-dig">
-              <Button type="button">Ny användare</Button>
-            </Link>
-          </>
-        )}
-      </div>
+          </StyledLoginForm>
+          <h3>Ny användare? Klicka på knappen nedan.</h3>
+          <Link to="/registrera-dig">
+            <Button type="button">Ny användare</Button>
+          </Link>
+          <h3>
+            Glömt lösenord? Fyll i din E-mail och klicka på knappen nedan.
+          </h3>
+          <Button type="submit" onClick={resetPassword} disabled={isInvalid}>
+            Återställ lösenord
+          </Button>
+        </>
+      )}
       {userError && <p>{userError.message}</p>}
     </StyledLogIn>
   );
