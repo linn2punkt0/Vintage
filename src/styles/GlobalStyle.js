@@ -30,11 +30,37 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
 
+  h1 {
+    font-family: var(--title-font);
+    font-weight: 600;
+  }
+
+  h2 {
+    font-family: var(--title-font);
+  }
+
+  h3 {
+    font-family: var(--title-font);
+  }
+
+  h4 {
+    font-family: var(--title-font);
+  }
+
+  h5 {
+    font-family: var(--title-font);
+  }
+
+  h6 {
+    font-family: var(--title-font);
+  }
+
   a {
     color: var(--main-font-color);
     text-decoration: none;
   }
-  p{
+  
+  p {
     font-family: var(--paragraph-font);
   }
   `;
