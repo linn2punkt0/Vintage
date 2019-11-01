@@ -111,7 +111,6 @@ const AddEvents = () => {
   auto.forEach(prediction => {
     console.log(`this is auto: ${prediction}`);
   });
-  console.log(regions);
 
   const addNewEvent = e => {
     e.preventDefault();
