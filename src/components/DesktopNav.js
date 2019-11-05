@@ -12,7 +12,11 @@ const StyledNav = styled.div`
   align-items: flex-end;
   margin-bottom: 3em;
   font-family: var(--title-font);
+  @media only screen and (max-width: 800px) {
+    display: none;
+  }
 `;
+
 const StyledLogo = styled.img`
   width: 200px;
   height: 200px;
