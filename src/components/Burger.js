@@ -22,6 +22,10 @@ const StyledBurger = styled.nav`
     display: none;
   } */
 
+  a {
+    text-decoration: none;
+  }
+
   button {
     z-index: 1000;
     background: none;

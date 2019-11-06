@@ -57,7 +57,7 @@ const GlobalStyle = createGlobalStyle`
 
   a {
     color: var(--main-font-color);
-    text-decoration: none;
+    /* text-decoration: none; */
   }
   
   p {

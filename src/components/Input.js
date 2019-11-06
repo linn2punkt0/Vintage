@@ -10,10 +10,11 @@ const StyledInput = styled.input`
   padding: 10px;
   color: var(--dark-text-color);
   background-color: var(--light-text-color);
+  margin: ${({ margin }) => margin || "0 0 1em 0"};
 `;
 
 const Input = props => {
-  const { type, onChange, id, name, placeholder, height } = props;
+  const { type, onChange, id, name, placeholder, height, margin } = props;
   return (
     <StyledInput
       type={type}
@@ -22,6 +23,7 @@ const Input = props => {
       name={name}
       placeholder={placeholder}
       height={height}
+      margin={margin}
     />
   );
 };

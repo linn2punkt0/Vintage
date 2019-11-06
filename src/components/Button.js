@@ -8,6 +8,7 @@ const StyledButton = styled.button`
   color: var(--light-text-color);
   border-radius: 5px;
   font-weight: 600;
+  border: none;
 
   -webkit-transform: skew(-20deg);
   -moz-transform: skew(-20deg);

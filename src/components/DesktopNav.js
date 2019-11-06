@@ -15,6 +15,10 @@ const StyledNav = styled.div`
   @media only screen and (max-width: 800px) {
     display: none;
   }
+
+  a {
+    text-decoration: none;
+  }
 `;
 
 const StyledLogo = styled.img`

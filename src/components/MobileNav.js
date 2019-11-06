@@ -14,6 +14,9 @@ const StyledNav = styled.div`
   @media only screen and (min-width: 800px) {
     display: none;
   }
+  a {
+    text-decoration: none;
+  }
 `;
 
 const StyledLogo = styled.img`
