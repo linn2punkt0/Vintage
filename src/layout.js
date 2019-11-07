@@ -5,22 +5,21 @@ import GlobalStyle from "./styles/GlobalStyle";
 import DesktopNav from "./components/DesktopNav";
 import Menu from "./components/MobileMenu";
 import MobileNav from "./components/MobileNav";
+// import MobileNav2 from "./components/MobileNav2";
 // import Burger from "./components/Burger";
 
 const StyledLayout = styled.div``;
 
 const Layout = props => {
   const { children } = props;
-  // const [menuIsOpen, setMenuIsOpen] = useState(false);
-  // const { authMenu } = useMenu();
 
   return (
     <>
       <GlobalStyle />
       <StyledLayout>
+        {/* <MobileNav2 /> */}
         <DesktopNav />
         <MobileNav />
-        {/* <Burger menuIsOpen={menuIsOpen} setMenuIsOpen={setMenuIsOpen} /> */}
         <Menu />
         <main>{children}</main>
       </StyledLayout>
