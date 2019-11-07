@@ -5,8 +5,11 @@ import app from "../firebase";
 import "react-datepicker/dist/react-datepicker.css";
 import { useAuth } from "../context/auth";
 import useDebounce from "../hooks/useDebounce";
-import Button from "./Button";
-import Input from "./Input";
+import Button from "./GlobalComponents/Button";
+import Input from "./GlobalComponents/Input";
+import CheckBoxInput from "./GlobalComponents/CheckBoxInput";
+import ColumnDiv from "./GlobalComponents/ColumnDiv";
+import RowDiv from "./GlobalComponents/RowDiv";
 
 const StyledAddEvents = styled.div`
   display: flex;
@@ -14,17 +17,7 @@ const StyledAddEvents = styled.div`
   justify-content: space-around;
   align-items: center;
 
-  .DateInput {
-    min-height: 40px;
-    height: ${({ height }) => height || "40px"};
-    min-width: 20em;
-    border: solid 1px black;
-    border-radius: 5px;
-    padding: 10px;
-    color: var(--dark-text-color);
-    background-color: var(--light-text-color);
-  }
-
+  .DateInput,
   select {
     min-height: 40px;
     height: ${({ height }) => height || "40px"};
@@ -34,6 +27,7 @@ const StyledAddEvents = styled.div`
     padding: 10px;
     color: var(--dark-text-color);
     background-color: var(--light-text-color);
+    margin: 0 0 1em 0;
   }
 `;
 
@@ -46,15 +40,49 @@ const StyledEventForm = styled.div`
   margin: 2em;
   border: solid 1px black;
   border-radius: 5px;
+  background-color: var(--main-accent-color);
+  color: var(--light-text-color);
+`;
 
-  input,
-  select {
-    margin: 0 0 1em 0;
+const Predictions = styled.ul`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 40px;
+  min-width: 20em;
+  border: solid 1px black;
+  border-radius: 0 0 5px 5px;
+  padding: 10px;
+  color: var(--dark-text-color);
+  background-color: var(--light-text-color);
+  margin: 0;
+
+  button {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-bottom: solid 1px black;
+    background-color: var(--ligt-text-color);
   }
+`;
+
+const StyledSpecialInput = styled.input`
+  min-height: 40px;
+  height: ${({ height }) => height || "40px"};
+  min-width: 20em;
+  border: solid 1px black;
+  border-radius: 5px;
+  padding: 10px;
+  color: var(--dark-text-color);
+  background-color: var(--light-text-color);
+  margin: 0;
 `;
 
 const AddEvents = () => {
   const db = app.firestore();
+
+  // Event data
   const [eventName, setEventName] = useState("");
   const [eventCity, setEventCity] = useState("");
   const [eventAddress, setEventAddress] = useState("");
@@ -62,14 +90,24 @@ const AddEvents = () => {
   const [eventEnd, setEventEnd] = useState("");
   const [eventRegion, setEventRegion] = useState("");
   const [eventDescription, setEventDescription] = useState("");
-  const [auto, setAuto] = useState([]);
-  const [regions, setRegions] = useState([]);
+  const [eventLink, setEventLink] = useState("");
+  const [eventTimeperiods, setEventTimeperiods] = useState([]);
+  const [eventCategories, setEventCategories] = useState([]);
+  const [autocompletedAddress, setAutocompletedAddress] = useState(null);
 
-  const debouncedAddress = useDebounce(eventAddress, 500);
+  // Temp data
+  const [addressPredictions, setAddressPredictions] = useState([]);
+  const [displayPredictions, setDisplayPredictions] = useState(false);
+  const [regions, setRegions] = useState([]);
+  const [timeperiods, setTimeperiods] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  const debouncedAddress = useDebounce(eventAddress, 800);
 
   // Get user if logged in
   const { authUser } = useAuth();
 
+  // Fetch all regions from firebase
   useEffect(() => {
     const tempArray = [];
 
@@ -83,6 +121,35 @@ const AddEvents = () => {
       });
   }, []);
 
+  // Fetch all timeperiods from firebase
+  useEffect(() => {
+    const tempArray = [];
+
+    db.collection("timeperiods")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          tempArray.push({ id: doc.id, ...doc.data() });
+        });
+        setTimeperiods(tempArray);
+      });
+  }, []);
+
+  // Fetch all categories from firebase
+  useEffect(() => {
+    const tempArray = [];
+
+    db.collection("eventCategories")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          tempArray.push({ id: doc.id, ...doc.data() });
+        });
+        setCategories(tempArray);
+      });
+  }, []);
+
+  // Use to reset form after submitting new event
   const resetForm = () => {
     setEventName("");
     setEventCity("");
@@ -91,27 +158,54 @@ const AddEvents = () => {
     setEventEnd("");
     setEventRegion("");
     setEventDescription("");
+    setEventLink("");
+    setAutocompletedAddress("");
+    setAddressPredictions([]);
+    setDisplayPredictions(false);
   };
 
   // If any fields are empty disable submit-button
-  const isInvalid = eventName === "" || eventStart === "";
+  const isInvalid =
+    eventName === "" ||
+    eventStart === "" ||
+    eventAddress === "" ||
+    eventRegion === "" ||
+    eventDescription === "" ||
+    eventCity === "";
 
-  const getAddressSuggestions = () => {
-    fetch(`/.netlify/functions/autocomplete?input=${eventAddress}`, {
-      headers: { accept: "Accept: application/json" }
-    })
-      .then(response => response.json())
-      .then(data =>
-        data.msg.predictions.forEach(prediction => {
-          setAuto([...auto, prediction.description]);
-        })
-      );
+  // Replace Å, Ä, Ö to avoid API-Errors
+  const replaceSpecialChars = string => {
+    return string
+      .replace("å", "a")
+      .replace("ä", "a")
+      .replace("ö", "o")
+      .replace("Å", "A")
+      .replace("Ä", "A")
+      .replace("Ö", "O");
   };
 
-  auto.forEach(prediction => {
-    console.log(`this is auto: ${prediction}`);
-  });
+  // Get address-autocompletes from Google API via netlify functions
+  const getAddressSuggestions = () => {
+    const tempArray = [];
+    fetch(
+      `/.netlify/functions/autocomplete?input=${replaceSpecialChars(
+        eventAddress
+      )}`,
+      {
+        headers: { accept: "Accept: application/json" }
+      }
+    )
+      .then(response => response.json())
+      .then(data => {
+        data.msg.predictions.forEach(prediction => {
+          tempArray.push(prediction.description);
+        });
+        setAddressPredictions([...tempArray]);
+        setDisplayPredictions(true);
+      });
+  };
 
+  // Add new event to Firebase
   const addNewEvent = e => {
     e.preventDefault();
     if (authUser) {
@@ -123,15 +217,16 @@ const AddEvents = () => {
           description: eventDescription,
           city: eventCity.charAt(0).toUpperCase() + eventCity.slice(1),
           region: eventRegion,
-          address: eventAddress,
+          address: autocompletedAddress || eventAddress,
           location: eventAddress,
-          startDate: new Date(eventStart).getTime(),
-          endDate: new Date(eventEnd).getTime(),
+          startDate: new Date(eventStart),
+          endDate: new Date(eventEnd),
+          link: eventLink,
           addedByUser: authUser.email
         })
         .then(function() {
-          console.log("Document successfully written!");
           resetForm();
+          console.log("Document successfully written!");
         })
         .catch(function(error) {
           console.error("Error writing document: ", error);
@@ -139,11 +234,18 @@ const AddEvents = () => {
     }
   };
 
+  // Run getAddressSuggestions-function when eventAddress is set, after debounce
   useEffect(() => {
     if (debouncedAddress) {
       getAddressSuggestions();
     }
   }, [debouncedAddress]);
+
+  // console.log(`eventAddress: ${eventAddress}`);
+  // console.log(`autocompletedAddress: ${autocompletedAddress}`);
+
+  // console.log(eventTimeperiods);
+  // console.log(eventCategories);
 
   return (
     <StyledAddEvents>
@@ -165,14 +267,42 @@ const AddEvents = () => {
           value={eventDescription}
           onChange={e => setEventDescription(e.target.value)}
         />
-        <Input
-          type="text"
-          name="address"
-          id="address"
-          placeholder="Adress"
-          value={eventAddress}
-          onChange={e => setEventAddress(e.target.value)}
-        />
+        {!autocompletedAddress && (
+          <Input
+            type="text"
+            name="address"
+            id="address"
+            placeholder="Adress"
+            value={eventAddress}
+            onChange={e => setEventAddress(e.target.value)}
+            margin="0"
+          />
+        )}
+        {displayPredictions && (
+          <Predictions>
+            {addressPredictions.map(prediction => (
+              <button
+                type="submit"
+                key={prediction}
+                onClick={() => {
+                  setAutocompletedAddress(prediction);
+                  setDisplayPredictions(false);
+                }}
+              >
+                {prediction}
+              </button>
+            ))}
+          </Predictions>
+        )}
+        {autocompletedAddress && (
+          <StyledSpecialInput
+            type="text"
+            name="address2"
+            id="address2"
+            value={autocompletedAddress}
+            onChange={e => setAutocompletedAddress(e.target.value)}
+          />
+        )}
         <Input
           type="text"
           name="city"
@@ -180,6 +310,7 @@ const AddEvents = () => {
           placeholder="Stad"
           value={eventCity}
           onChange={e => setEventCity(e.target.value)}
+          margin="1em 0 1em 0"
         />
         <select
           type="text"
@@ -217,7 +348,59 @@ const AddEvents = () => {
           placeholderText="Fyll i sluttid och datum"
           className="DateInput"
         />
-        <Button type="submit" onClick={addNewEvent} disabled={isInvalid}>
+        <Input
+          type="url"
+          name="link"
+          id="link"
+          placeholder="Länk till webbsida eller facebook-event."
+          value={eventLink}
+          onChange={e => setEventLink(e.target.value)}
+        />
+        <RowDiv align="flex-start">
+          <ColumnDiv padding=" 0 20px 20px 20px">
+            <h3>Kategorier</h3>
+            {categories.map(category => (
+              <RowDiv key={category.id} padding="5px">
+                <CheckBoxInput
+                  type="checkbox"
+                  name="categories"
+                  id="categories"
+                  placeholder="Lägg till kategorier"
+                  value={category.name}
+                  onChange={e =>
+                    setEventCategories([...eventCategories, e.target.value])
+                  }
+                />
+                <label htmlFor="categories">{category.name}</label>
+              </RowDiv>
+            ))}
+          </ColumnDiv>
+          <ColumnDiv padding=" 0 20px 20px 20px">
+            <h3>Tidsperioder</h3>
+            {timeperiods.map(timeperiod => (
+              <RowDiv key={timeperiod.id} padding="5px">
+                <CheckBoxInput
+                  type="checkbox"
+                  name="timeperiods"
+                  id="timeperiods"
+                  placeholder="Lägg till aktuella tidsperioder"
+                  value={timeperiod.name}
+                  onChange={e =>
+                    setEventTimeperiods([...eventTimeperiods, e.target.value])
+                  }
+                />
+                <label htmlFor="timeperiods">{timeperiod.name}</label>
+              </RowDiv>
+            ))}
+          </ColumnDiv>
+        </RowDiv>
+        <Button
+          type="submit"
+          onClick={addNewEvent}
+          disabled={isInvalid}
+          bgColor="var(--bg-color)"
+          color="var(--dark-text-color)"
+        >
           Lägg till event
         </Button>
       </StyledEventForm>

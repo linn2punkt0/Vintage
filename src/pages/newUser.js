@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import firebase from "../firebase";
 import { useAuth } from "../context/auth";
-import Button from "../components/Button";
-import Input from "../components/Input";
+import Button from "../components/GlobalComponents/Button";
+import Input from "../components/GlobalComponents/Input";
 
 const StyledNewUser = styled.div`
   display: flex;

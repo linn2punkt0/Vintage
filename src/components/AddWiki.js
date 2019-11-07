@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import app from "../firebase";
 import { useAuth } from "../context/auth";
-import Button from "./Button";
-import Input from "./Input";
+import Button from "./GlobalComponents/Button";
+import Input from "./GlobalComponents/Input";
 
 const StyledAddWiki = styled.div`
   display: flex;
