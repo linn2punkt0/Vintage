@@ -76,10 +76,10 @@ const Menu = () => {
           Vintageskola
         </NavLink>
         <NavLink
-          to="/material-och-tvattrad"
+          to="/material-och-kladvard"
           onClick={() => setMenuIsOpen(false)}
         >
-          Material & Tvättråd
+          Material & Klädvård
         </NavLink>
         <NavLink to="/vintagewiki" onClick={() => setMenuIsOpen(false)}>
           VintageWiki

@@ -27,7 +27,7 @@ function App() {
                   <Route exact path="/vintageskola" component={VintageSchool} />
                   <Route
                     exact
-                    path="/material-och-tvattrad"
+                    path="/material-och-kladvard"
                     component={Materials}
                   />
                   <Route exact path="/vintagewiki" component={VintageWiki} />

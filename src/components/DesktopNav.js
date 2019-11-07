@@ -54,7 +54,7 @@ const Nav = () => {
       <UnderLinedMenu>
         <NavLink to="/event-och-massor">Events</NavLink>
         <NavLink to="/vintageskola">Vintageskola</NavLink>
-        <NavLink to="/material-och-tvattrad">Material & Tvättråd</NavLink>
+        <NavLink to="/material-och-kladvard">Material & Klädvård</NavLink>
       </UnderLinedMenu>
 
       <NavLink to="/">
