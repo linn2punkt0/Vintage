@@ -162,6 +162,8 @@ const AddEvents = () => {
     setAutocompletedAddress("");
     setAddressPredictions([]);
     setDisplayPredictions(false);
+    setEventCategories([]);
+    setEventTimeperiods([]);
   };
 
   // If any fields are empty disable submit-button
@@ -211,7 +213,7 @@ const AddEvents = () => {
     if (authUser) {
       // Add data to firebase here, validate and format data in the process
       db.collection("events")
-        .doc(eventName + eventStart)
+        .doc(eventName + new Date())
         .set({
           name: eventName.charAt(0).toUpperCase() + eventName.slice(1),
           description: eventDescription,
@@ -222,7 +224,9 @@ const AddEvents = () => {
           startDate: new Date(eventStart),
           endDate: new Date(eventEnd),
           link: eventLink,
-          addedByUser: authUser.email
+          addedByUser: authUser.email,
+          timeperiods: eventTimeperiods,
+          categories: eventCategories
         })
         .then(function() {
           resetForm();
