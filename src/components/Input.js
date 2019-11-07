@@ -14,7 +14,16 @@ const StyledInput = styled.input`
 `;
 
 const Input = props => {
-  const { type, onChange, id, name, placeholder, height, margin } = props;
+  const {
+    type,
+    onChange,
+    id,
+    name,
+    placeholder,
+    height,
+    margin,
+    value
+  } = props;
   return (
     <StyledInput
       type={type}
@@ -24,6 +33,7 @@ const Input = props => {
       placeholder={placeholder}
       height={height}
       margin={margin}
+      value={value}
     />
   );
 };
