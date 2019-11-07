@@ -1,107 +1,84 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import app from "../firebase";
+// import app from "../firebase";
+import {
+  // getAllEvents,
+  // getAllRegions,
+  // getAllTimeperiods,
+  // getAllCategories,
+  getAllStartData,
+  getFilteredEvents
+} from "../firebaseFunctions";
 import { useAuth } from "../context/auth";
 import EventOverview from "../components/EventOverview";
 import AddEvents from "../components/AddEvents";
+import ColumnDiv from "../components/GlobalComponents/ColumnDiv";
+import RowDiv from "../components/GlobalComponents/RowDiv";
+import CheckBoxInput from "../components/GlobalComponents/CheckBoxInput";
 
 const StyledEvents = styled.div``;
 
 const FilterBlock = styled.div``;
 
 const Events = () => {
-  const db = app.firestore();
+  // const db = app.firestore();
   // fetch andset once
   const [regions, setRegions] = useState([]);
+  const [timeperiods, setTimeperiods] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   // Update many times
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
+  const [dateOrder, setDateOrder] = useState("asc");
   const [regionFilter, setRegionFilter] = useState("");
-  const [dateOrder, setDateOrder] = useState("");
+  const [timeperiodFilter, setTimeperiodFilter] = useState([]);
+  const [categoriesFilter, setCategoriesFilter] = useState([]);
 
   // Get user if logged in
   const { authUser } = useAuth();
 
-  // Get all events, sort by date
   useEffect(() => {
-    const tempArray = [];
-    const order = dateOrder || "asc";
-
-    db.collection("events")
-      .orderBy("startDate", order)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          tempArray.push({ id: doc.id, ...doc.data() });
-        });
-        setEvents(tempArray);
-      });
-  }, [dateOrder]);
-
-  // get all regions
-  useEffect(() => {
-    const tempArray = [];
-
-    db.collection("regions")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          tempArray.push({ id: doc.id, ...doc.data() });
-        });
-        setRegions(tempArray);
-      });
+    const fetchEvents = async () => {
+      const response = await getAllStartData("events");
+      setEvents(response);
+    };
+    const fetchRegions = async () => {
+      const response = await getAllStartData("regions");
+      setRegions(response);
+    };
+    const fetchTimeperiods = async () => {
+      const response = await getAllStartData("timeperiods");
+      setTimeperiods(response);
+    };
+    const fetchCategories = async () => {
+      const response = await getAllStartData("eventCategories");
+      setCategories(response);
+    };
+    fetchEvents();
+    fetchRegions();
+    fetchTimeperiods();
+    fetchCategories();
   }, []);
 
-  // get events by timeperiod ------ WORK IN PROGRESS
-  // useEffect(() => {
-  //   const tempArray = [];
-
-  //   db.collection("events")
-  //     .where("timeperiods", "array-contains", "50-tal")
-  //     .get()
-  //     .then(querySnapshot => {
-  //       querySnapshot.forEach(doc => {
-  //         tempArray.push({ id: doc.id, ...doc.data() });
-  //       });
-  //       setEvents(tempArray);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   const tempArray = [];
-
-  //   db.collection("events")
-  //     .where("timeperiod", "array-contains", "50-tal")
-  //     .get()
-  //     .then(querySnapshot => {
-  //       querySnapshot.forEach(doc => {
-  //         tempArray.push({ id: doc.id, ...doc.data() });
-  //       });
-  //       setFilteredEvents(tempArray);
-  //     });
-  // }, []);
-
-  // get all events where region == regionFilter
   useEffect(() => {
-    const tempArray = [];
-
-    db.collection("events")
-      .where("region", "==", regionFilter)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          tempArray.push({ id: doc.id, ...doc.data() });
-        });
-        setFilteredEvents(tempArray);
-      });
-  }, [regionFilter]);
-
-  console.log(`filter: ${regionFilter}`);
+    const filterEvents = async () => {
+      const response = await getFilteredEvents(
+        dateOrder,
+        regionFilter,
+        timeperiodFilter,
+        categoriesFilter
+      );
+      setFilteredEvents(response);
+      console.log(response);
+    };
+    filterEvents();
+  }, [dateOrder, regionFilter, timeperiodFilter, categoriesFilter]);
 
   filteredEvents.forEach(e => {
     console.log(`resultat: ${e.name}`);
   });
+  console.log(`filter: ${filteredEvents}`);
 
   return (
     <StyledEvents>
@@ -127,12 +104,53 @@ const Events = () => {
           value={regionFilter}
           onChange={e => setRegionFilter(e.target.value)}
         >
-          {regions.map(region => (
-            <option key={region.id} value={region.name}>
-              {region.name}
-            </option>
-          ))}
+          {regions &&
+            regions.map(region => (
+              <option key={region.id} value={region.name}>
+                {region.name}
+              </option>
+            ))}
         </select>
+        <RowDiv align="flex-start">
+          <ColumnDiv padding=" 0 20px 20px 20px">
+            <h3>Kategorier</h3>
+            {categories &&
+              categories.map(category => (
+                <RowDiv key={category.id} padding="5px">
+                  <CheckBoxInput
+                    type="checkbox"
+                    name="categories"
+                    id="categories"
+                    placeholder="Lägg till kategorier"
+                    value={category.name}
+                    onChange={e =>
+                      setCategoriesFilter([...categoriesFilter, e.target.value])
+                    }
+                  />
+                  <label htmlFor="categories">{category.name}</label>
+                </RowDiv>
+              ))}
+          </ColumnDiv>
+          <ColumnDiv padding=" 0 20px 20px 20px">
+            <h3>Tidsperioder</h3>
+            {timeperiods &&
+              timeperiods.map(timeperiod => (
+                <RowDiv key={timeperiod.id} padding="5px">
+                  <CheckBoxInput
+                    type="checkbox"
+                    name="timeperiods"
+                    id="timeperiods"
+                    placeholder="Lägg till aktuella tidsperioder"
+                    value={timeperiod.name}
+                    onChange={e =>
+                      setTimeperiodFilter([...timeperiodFilter, e.target.value])
+                    }
+                  />
+                  <label htmlFor="timeperiods">{timeperiod.name}</label>
+                </RowDiv>
+              ))}
+          </ColumnDiv>
+        </RowDiv>
       </FilterBlock>
       {filteredEvents.length > 0
         ? filteredEvents.map(event => (
