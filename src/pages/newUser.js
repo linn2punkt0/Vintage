@@ -4,12 +4,17 @@ import { Link } from "react-router-dom";
 import firebase from "../firebase";
 import { useAuth } from "../context/auth";
 import Button from "../components/Button";
+import Input from "../components/Input";
 
 const StyledNewUser = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   & > form {
-    width: 300px;
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
 `;
 
@@ -66,48 +71,62 @@ const NewUser = () => {
       {authUser ? (
         <h2>Du är redan inloggad</h2>
       ) : (
-        <form>
-          <input
-            type="text"
-            name="username"
-            id="username"
-            placeholder="username"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-          />
-          <input
-            type="text"
-            name="email"
-            id="email"
-            placeholder="email"
-            value={userEmail}
-            onChange={e => setUserEmail(e.target.value)}
-          />
-          <input
-            // Change type to password when finished with login-system
-            type="password"
-            name="password"
-            id="password"
-            placeholder="password"
-            value={userPassword}
-            onChange={e => setUserPassword(e.target.value)}
-          />
-          <input
-            // Change type to password when finished with login-system
-            type="password"
-            name="password2"
-            id="password2"
-            placeholder="confirm password"
-            value={userPassword2}
-            onChange={e => setUserPassword2(e.target.value)}
-          />
-          <Button type="submit" onClick={submitForm} disabled={isInvalid}>
-            Registrera ny användare
-          </Button>
-          <Link to="/logga-in">
-            <Button type="button">Har du redan ett konto?</Button>
-          </Link>
-        </form>
+        <>
+          <h3>Varför ska jag registrera mig?</h3>
+          <p>
+            För att minska risken för spam och botar så får endast inloggade
+            användare bidra med innehåll till Vintage Sverige. Du behöver bara
+            fylla i din email och ett lösenord.
+          </p>
+          <form>
+            <Input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="username"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+            />
+            <Input
+              type="text"
+              name="email"
+              id="email"
+              placeholder="email"
+              value={userEmail}
+              onChange={e => setUserEmail(e.target.value)}
+            />
+            <Input
+              // Change type to password when finished with login-system
+              type="password"
+              name="password"
+              id="password"
+              placeholder="password"
+              value={userPassword}
+              onChange={e => setUserPassword(e.target.value)}
+            />
+            <Input
+              // Change type to password when finished with login-system
+              type="password"
+              name="password2"
+              id="password2"
+              placeholder="confirm password"
+              value={userPassword2}
+              onChange={e => setUserPassword2(e.target.value)}
+            />
+            <Button
+              type="submit"
+              onClick={submitForm}
+              disabled={isInvalid}
+              margin="0 0 1em 0"
+              bgColor="var(--secondary-button-color)"
+            >
+              Registrera ny användare
+            </Button>
+            <Link to="/logga-in">
+              <Button type="button">Har du redan ett konto?</Button>
+            </Link>
+          </form>
+        </>
       )}
 
       {userError && <p>{userError.message}</p>}
