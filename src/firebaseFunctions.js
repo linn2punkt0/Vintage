@@ -38,6 +38,7 @@ export const getFilteredEvents = async (
     });
   }
 
+  // ADD SOLUTION FOR MULTIPLE ARRAY-CONTAINS
   //   if (categories !== []) {
   //     query = query.where("categories", "array-contains", categories);
   //   }
@@ -48,18 +49,3 @@ export const getFilteredEvents = async (
   console.log(tempArray);
   return tempArray;
 };
-
-// export function getEventsByRegion(dateOrder) {
-//   const tempArray = [];
-//   const order = dateOrder || "asc";
-
-//   db.collection("events")
-//     .orderBy("startDate", order)
-//     .get()
-//     .then(querySnapshot => {
-//       querySnapshot.forEach(doc => {
-//         tempArray.push({ id: doc.id, ...doc.data() });
-//       });
-//       return tempArray;
-//     });
-// }

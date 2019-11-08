@@ -3,6 +3,7 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import app from "../firebase";
 import "react-datepicker/dist/react-datepicker.css";
+import { getAllStartData } from "../firebaseFunctions";
 import { useAuth } from "../context/auth";
 import useDebounce from "../hooks/useDebounce";
 import Button from "./GlobalComponents/Button";
@@ -107,46 +108,23 @@ const AddEvents = () => {
   // Get user if logged in
   const { authUser } = useAuth();
 
-  // Fetch all regions from firebase
+  // Fetch all options for dropdown and checkboxes
   useEffect(() => {
-    const tempArray = [];
-
-    db.collection("regions")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          tempArray.push({ id: doc.id, ...doc.data() });
-        });
-        setRegions(tempArray);
-      });
-  }, []);
-
-  // Fetch all timeperiods from firebase
-  useEffect(() => {
-    const tempArray = [];
-
-    db.collection("timeperiods")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          tempArray.push({ id: doc.id, ...doc.data() });
-        });
-        setTimeperiods(tempArray);
-      });
-  }, []);
-
-  // Fetch all categories from firebase
-  useEffect(() => {
-    const tempArray = [];
-
-    db.collection("eventCategories")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          tempArray.push({ id: doc.id, ...doc.data() });
-        });
-        setCategories(tempArray);
-      });
+    const fetchRegions = async () => {
+      const response = await getAllStartData("regions");
+      setRegions(response);
+    };
+    const fetchTimeperiods = async () => {
+      const response = await getAllStartData("timeperiods");
+      setTimeperiods(response);
+    };
+    const fetchCategories = async () => {
+      const response = await getAllStartData("eventCategories");
+      setCategories(response);
+    };
+    fetchRegions();
+    fetchTimeperiods();
+    fetchCategories();
   }, []);
 
   // Use to reset form after submitting new event
@@ -244,12 +222,6 @@ const AddEvents = () => {
       getAddressSuggestions();
     }
   }, [debouncedAddress]);
-
-  // console.log(`eventAddress: ${eventAddress}`);
-  // console.log(`autocompletedAddress: ${autocompletedAddress}`);
-
-  // console.log(eventTimeperiods);
-  // console.log(eventCategories);
 
   return (
     <StyledAddEvents>
@@ -389,6 +361,7 @@ const AddEvents = () => {
                   id="timeperiods"
                   placeholder="Lägg till aktuella tidsperioder"
                   value={timeperiod.name}
+                  // checked={}
                   onChange={e =>
                     setEventTimeperiods([...eventTimeperiods, e.target.value])
                   }
