@@ -18,15 +18,15 @@ export const getAllStartData = async collection => {
 export const getFilteredEvents = async (
   order,
   region,
-  timeperiods,
-  categories
+  timeperiods
+  // categories
 ) => {
   const tempArray = [];
   let query = db.collection("events");
 
   query = query.orderBy("startDate", order);
 
-  console.log(order, region, timeperiods, categories);
+  // console.log(order, region, timeperiods, categories);
 
   if (region !== "") {
     query = query.where("region", "==", region);
@@ -46,6 +46,6 @@ export const getFilteredEvents = async (
   querySnapshot.forEach(doc => {
     tempArray.push({ id: doc.id, ...doc.data() });
   });
-  console.log(tempArray);
+  // console.log(tempArray);
   return tempArray;
 };
