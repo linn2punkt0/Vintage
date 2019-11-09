@@ -67,7 +67,10 @@ const Menu = () => {
     <StyledMenu menuIsOpen={menuIsOpen}>
       <div>
         <NavLink to="/" onClick={() => setMenuIsOpen(false)}>
-          <StyledLogo src="/images/LogoTest4.png" alt="logo" />
+          <StyledLogo
+            src={menuIsOpen ? "/images/LogoWhite.png" : "/images/LogoTest4.png"}
+            alt="logo"
+          />
         </NavLink>
         <NavLink to="/event-och-massor" onClick={() => setMenuIsOpen(false)}>
           Events
