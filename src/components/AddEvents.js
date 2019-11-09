@@ -3,7 +3,6 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import app from "../firebase";
 import "react-datepicker/dist/react-datepicker.css";
-import { getAllStartData } from "../firebaseFunctions";
 import { useAuth } from "../context/auth";
 import useDebounce from "../hooks/useDebounce";
 import Button from "./GlobalComponents/Button";
@@ -80,13 +79,14 @@ const StyledSpecialInput = styled.input`
   margin: 0;
 `;
 
-const AddEvents = () => {
+const AddEvents = ({ regions, categories, timeperiods }) => {
   const db = app.firestore();
 
-  // Event data
+  // Event data, set by the user
   const [eventName, setEventName] = useState("");
   const [eventCity, setEventCity] = useState("");
   const [eventAddress, setEventAddress] = useState("");
+  const [eventLocation, setEventLocation] = useState("");
   const [eventStart, setEventStart] = useState("");
   const [eventEnd, setEventEnd] = useState("");
   const [eventRegion, setEventRegion] = useState("");
@@ -99,33 +99,12 @@ const AddEvents = () => {
   // Temp data
   const [addressPredictions, setAddressPredictions] = useState([]);
   const [displayPredictions, setDisplayPredictions] = useState(false);
-  const [regions, setRegions] = useState([]);
-  const [timeperiods, setTimeperiods] = useState([]);
-  const [categories, setCategories] = useState([]);
 
   const debouncedAddress = useDebounce(eventAddress, 800);
+  const debouncedAutocompleted = useDebounce(autocompletedAddress, 800);
 
   // Get user if logged in
   const { authUser } = useAuth();
-
-  // Fetch all options for dropdown and checkboxes
-  useEffect(() => {
-    const fetchRegions = async () => {
-      const response = await getAllStartData("regions");
-      setRegions(response);
-    };
-    const fetchTimeperiods = async () => {
-      const response = await getAllStartData("timeperiods");
-      setTimeperiods(response);
-    };
-    const fetchCategories = async () => {
-      const response = await getAllStartData("eventCategories");
-      setCategories(response);
-    };
-    fetchRegions();
-    fetchTimeperiods();
-    fetchCategories();
-  }, []);
 
   // Use to reset form after submitting new event
   const resetForm = () => {
@@ -185,6 +164,26 @@ const AddEvents = () => {
       });
   };
 
+  const getLocation = () => {
+    const tempArray = [];
+    fetch(
+      `/.netlify/functions/location?input=${replaceSpecialChars(
+        autocompletedAddress || eventAddress
+      )}`,
+      {
+        headers: { accept: "Accept: application/json" }
+      }
+    )
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        // data.msg.predictions.forEach(prediction => {
+        //   tempArray.push(prediction.description);
+        // });
+        setEventLocation([...tempArray]);
+      });
+  };
+
   // Add new event to Firebase
   const addNewEvent = e => {
     e.preventDefault();
@@ -198,7 +197,7 @@ const AddEvents = () => {
           city: eventCity.charAt(0).toUpperCase() + eventCity.slice(1),
           region: eventRegion,
           address: autocompletedAddress || eventAddress,
-          location: eventAddress,
+          location: eventLocation,
           startDate: new Date(eventStart),
           endDate: new Date(eventEnd),
           link: eventLink,
@@ -222,6 +221,13 @@ const AddEvents = () => {
       getAddressSuggestions();
     }
   }, [debouncedAddress]);
+
+  // Run getLocation-function when adress is set
+  useEffect(() => {
+    if (debouncedAddress) {
+      getLocation();
+    }
+  }, [debouncedAddress, debouncedAutocompleted]);
 
   return (
     <StyledAddEvents>
