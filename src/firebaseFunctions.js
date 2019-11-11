@@ -15,37 +15,23 @@ export const getAllStartData = async collection => {
 };
 
 // Fetch many times when sorting and filtering
-export const getFilteredEvents = async (
-  order,
-  region,
-  timeperiods
-  // categories
-) => {
+export const getFilteredEvents = async (order, region, tags) => {
   const tempArray = [];
   let query = db.collection("events");
 
   query = query.orderBy("startDate", order);
 
-  // console.log(order, region, timeperiods, categories);
-
   if (region !== "") {
     query = query.where("region", "==", region);
   }
 
-  if (timeperiods.length > 0) {
-    timeperiods.forEach(period => {
-      query = query.where("timeperiods", "array-contains", period);
-    });
+  if (tags !== []) {
+    query = query.where("tags", "array-contains-any", tags);
   }
 
-  // ADD SOLUTION FOR MULTIPLE ARRAY-CONTAINS
-  //   if (categories !== []) {
-  //     query = query.where("categories", "array-contains", categories);
-  //   }
   const querySnapshot = await query.get();
   querySnapshot.forEach(doc => {
     tempArray.push({ id: doc.id, ...doc.data() });
   });
-  // console.log(tempArray);
   return tempArray;
 };

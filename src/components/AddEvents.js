@@ -92,8 +92,8 @@ const AddEvents = ({ regions, categories, timeperiods }) => {
   const [eventRegion, setEventRegion] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [eventLink, setEventLink] = useState("");
-  const [eventTimeperiods, setEventTimeperiods] = useState([]);
-  const [eventCategories, setEventCategories] = useState([]);
+
+  const [eventTags, setEventTags] = useState([]);
   const [autocompletedAddress, setAutocompletedAddress] = useState(null);
 
   // Temp data
@@ -119,8 +119,7 @@ const AddEvents = ({ regions, categories, timeperiods }) => {
     setAutocompletedAddress("");
     setAddressPredictions([]);
     setDisplayPredictions(false);
-    setEventCategories([]);
-    setEventTimeperiods([]);
+    setEventTags([]);
   };
 
   // If any fields are empty disable submit-button
@@ -202,8 +201,7 @@ const AddEvents = ({ regions, categories, timeperiods }) => {
           endDate: new Date(eventEnd),
           link: eventLink,
           addedByUser: authUser.email,
-          timeperiods: eventTimeperiods,
-          categories: eventCategories
+          tags: eventTags
         })
         .then(function() {
           resetForm();
@@ -349,9 +347,7 @@ const AddEvents = ({ regions, categories, timeperiods }) => {
                   id="categories"
                   placeholder="Lägg till kategorier"
                   value={category.name}
-                  onChange={e =>
-                    setEventCategories([...eventCategories, e.target.value])
-                  }
+                  onChange={e => setEventTags([...eventTags, e.target.value])}
                 />
                 <label htmlFor="categories">{category.name}</label>
               </RowDiv>
@@ -368,9 +364,7 @@ const AddEvents = ({ regions, categories, timeperiods }) => {
                   placeholder="Lägg till aktuella tidsperioder"
                   value={timeperiod.name}
                   // checked={}
-                  onChange={e =>
-                    setEventTimeperiods([...eventTimeperiods, e.target.value])
-                  }
+                  onChange={e => setEventTags([...eventTags, e.target.value])}
                 />
                 <label htmlFor="timeperiods">{timeperiod.name}</label>
               </RowDiv>

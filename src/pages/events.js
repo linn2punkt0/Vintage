@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-// import app from "../firebase";
-import {
-  // getAllEvents,
-  // getAllRegions,
-  // getAllTimeperiods,
-  // getAllCategories,
-  getAllStartData,
-  getFilteredEvents
-} from "../firebaseFunctions";
+import { getAllStartData, getFilteredEvents } from "../firebaseFunctions";
 import { useAuth } from "../context/auth";
 import EventOverview from "../components/EventOverview";
 import AddEvents from "../components/AddEvents";
 import ColumnDiv from "../components/GlobalComponents/ColumnDiv";
 import RowDiv from "../components/GlobalComponents/RowDiv";
 import CheckBoxInput from "../components/GlobalComponents/CheckBoxInput";
+import Button from "../components/GlobalComponents/Button";
 
 const StyledEvents = styled.div``;
 
@@ -37,7 +30,6 @@ const FilterBlock = styled.div`
 
 const EventContainer = styled.div`
   margin: 20px;
-  /* width: 100%; */
   max-height: 60vh;
   overflow: scroll;
   border: solid 1px black;
@@ -45,8 +37,7 @@ const EventContainer = styled.div`
 `;
 
 const Events = () => {
-  // const db = app.firestore();
-  // fetch andset once
+  // fetch and set once
   const [regions, setRegions] = useState([]);
   const [timeperiods, setTimeperiods] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -56,8 +47,7 @@ const Events = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [dateOrder, setDateOrder] = useState("asc");
   const [regionFilter, setRegionFilter] = useState("");
-  const [timeperiodFilter, setTimeperiodFilter] = useState([]);
-  const [categoriesFilter, setCategoriesFilter] = useState([]);
+  const [tagsFilter, setTagsFilter] = useState([]);
 
   const [openFilter, setOpenFilter] = useState(false);
 
@@ -87,24 +77,25 @@ const Events = () => {
     fetchCategories();
   }, []);
 
-  useEffect(() => {
-    const filterEvents = async () => {
-      const response = await getFilteredEvents(
-        dateOrder,
-        regionFilter,
-        timeperiodFilter,
-        categoriesFilter
-      );
-      setFilteredEvents(response);
-      // console.log(response);
-    };
-    filterEvents();
-  }, [dateOrder, regionFilter, timeperiodFilter, categoriesFilter]);
+  const filterEvents = async () => {
+    const response = await getFilteredEvents(
+      dateOrder,
+      regionFilter,
+      tagsFilter
+    );
+    setFilteredEvents(response);
+  };
 
-  // filteredEvents.forEach(e => {
-  //   console.log(`resultat: ${e.name}`);
+  const clearFilters = () => {
+    setRegionFilter("");
+    setDateOrder("asc");
+    setTagsFilter([]);
+    setFilteredEvents(events);
+  };
+
+  // tagsFilter.forEach(tag => {
+  //   console.log(`Tags: ${tag}`);
   // });
-  // console.log(`filter: ${filteredEvents}`);
 
   return (
     <StyledEvents>
@@ -140,6 +131,8 @@ const Events = () => {
                 value={regionFilter}
                 onChange={e => setRegionFilter(e.target.value)}
               >
+                <option value="">Välj en region</option>
+                <option value="">Alla regioner</option>
                 {regions &&
                   regions.map(region => (
                     <option key={region.id} value={region.name}>
@@ -161,10 +154,7 @@ const Events = () => {
                         placeholder="Lägg till kategorier"
                         value={category.name}
                         onChange={e =>
-                          setCategoriesFilter([
-                            ...categoriesFilter,
-                            e.target.value
-                          ])
+                          setTagsFilter([...tagsFilter, e.target.value])
                         }
                       />
                       <label htmlFor="categories">{category.name}</label>
@@ -182,11 +172,9 @@ const Events = () => {
                         id="timeperiods"
                         placeholder="Lägg till aktuella tidsperioder"
                         value={timeperiod.name}
+                        // checked={e.target.checked}
                         onChange={e =>
-                          setTimeperiodFilter([
-                            ...timeperiodFilter,
-                            e.target.value
-                          ])
+                          setTagsFilter([...tagsFilter, e.target.value])
                         }
                       />
                       <label htmlFor="timeperiods">{timeperiod.name}</label>
@@ -194,6 +182,20 @@ const Events = () => {
                   ))}
               </ColumnDiv>
             </RowDiv>
+            <Button
+              type="button"
+              margin=" 0 0.5em 1em 0"
+              onClick={() => filterEvents()}
+            >
+              Filtrera
+            </Button>
+            <Button
+              type="button"
+              margin=" 0 0 1em 0.5em"
+              onClick={() => clearFilters()}
+            >
+              Rensa filter
+            </Button>
           </FilterBlock>
         </>
       )}
