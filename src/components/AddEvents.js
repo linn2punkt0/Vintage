@@ -163,6 +163,7 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
       });
   };
 
+  // NOT DONE
   const getLocation = () => {
     const tempArray = [];
     fetch(
@@ -239,6 +240,18 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
       getLocation();
     }
   }, [debouncedAddress, debouncedAutocompleted]);
+
+  const toggleEventTags = (e, tagType) => {
+    if (eventTags.indexOf(tagType.name) === -1) {
+      setEventTags([...eventTags, e.target.value]);
+    } else {
+      setEventTags(
+        eventTags.filter(item => {
+          return tagType.name !== item;
+        })
+      );
+    }
+  };
 
   return (
     <StyledAddEvents>
@@ -361,17 +374,7 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
                   placeholder="Lägg till kategorier"
                   value={category.name}
                   checked={eventTags.indexOf(category.name) !== -1}
-                  onChange={e => {
-                    if (eventTags.indexOf(category.name) === -1) {
-                      setEventTags([...eventTags, e.target.value]);
-                    } else {
-                      setEventTags(
-                        eventTags.filter(item => {
-                          return category.name !== item;
-                        })
-                      );
-                    }
-                  }}
+                  onChange={e => toggleEventTags(e, category)}
                 />
                 <label htmlFor="categories">{category.name}</label>
               </RowDiv>
@@ -388,17 +391,7 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
                   placeholder="Lägg till aktuella tidsperioder"
                   value={timeperiod.name}
                   checked={eventTags.indexOf(timeperiod.name) !== -1}
-                  onChange={e => {
-                    if (eventTags.indexOf(timeperiod.name) === -1) {
-                      setEventTags([...eventTags, e.target.value]);
-                    } else {
-                      setEventTags(
-                        eventTags.filter(item => {
-                          return timeperiod.name !== item;
-                        })
-                      );
-                    }
-                  }}
+                  onChange={e => toggleEventTags(e, timeperiod)}
                 />
                 <label htmlFor="timeperiods">{timeperiod.name}</label>
               </RowDiv>

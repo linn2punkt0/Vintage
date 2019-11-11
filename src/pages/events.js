@@ -97,6 +97,18 @@ const Events = () => {
     setEvents([...events, object]);
   };
 
+  const toggleTags = (e, tagType) => {
+    if (tagsFilter.indexOf(tagType.name) === -1) {
+      setTagsFilter([...tagsFilter, e.target.value]);
+    } else {
+      setTagsFilter(
+        tagsFilter.filter(item => {
+          return tagType.name !== item;
+        })
+      );
+    }
+  };
+
   // tagsFilter.forEach(tag => {
   //   console.log(`Tags: ${tag}`);
   // });
@@ -157,17 +169,7 @@ const Events = () => {
                         placeholder="Lägg till kategorier"
                         value={category.name}
                         checked={tagsFilter.indexOf(category.name) !== -1}
-                        onChange={e => {
-                          if (tagsFilter.indexOf(category.name) === -1) {
-                            setTagsFilter([...tagsFilter, e.target.value]);
-                          } else {
-                            setTagsFilter(
-                              tagsFilter.filter(item => {
-                                return category.name !== item;
-                              })
-                            );
-                          }
-                        }}
+                        onChange={e => toggleTags(e, category)}
                       />
                       <label htmlFor="categories">{category.name}</label>
                     </RowDiv>
@@ -185,17 +187,7 @@ const Events = () => {
                         placeholder="Lägg till aktuella tidsperioder"
                         value={timeperiod.name}
                         checked={tagsFilter.indexOf(timeperiod.name) !== -1}
-                        onChange={e => {
-                          if (tagsFilter.indexOf(timeperiod.name) === -1) {
-                            setTagsFilter([...tagsFilter, e.target.value]);
-                          } else {
-                            setTagsFilter(
-                              tagsFilter.filter(item => {
-                                return timeperiod.name !== item;
-                              })
-                            );
-                          }
-                        }}
+                        onChange={e => toggleTags(e, timeperiod)}
                       />
                       <label htmlFor="timeperiods">{timeperiod.name}</label>
                     </RowDiv>
