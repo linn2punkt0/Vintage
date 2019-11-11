@@ -30,7 +30,7 @@ const EventOverview = event => {
         <div>
           <h3>{data.name}</h3>
           <h4>{timeConverter(startTimestamp)}</h4>
-          <h4>Plats: {data.city}</h4>
+          <h4>Stad: {data.city}</h4>
           <button type="button" onClick={() => setExpanded(true)}>
             Visa mer
           </button>
