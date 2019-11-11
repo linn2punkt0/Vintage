@@ -29,7 +29,6 @@ const AddWiki = ({ addNewItem }) => {
   const [wikiWord, setWikiWord] = useState("");
   const [wikiDescription, setWikiDescription] = useState("");
   // eslint-disable-next-line no-unused-vars
-  //   const [wikiCategory, setWikiCategory] = useState("");
 
   // Get user if logged in
   const { authUser } = useAuth();
@@ -45,8 +44,6 @@ const AddWiki = ({ addNewItem }) => {
   const addNewWiki = async e => {
     e.preventDefault();
 
-    // Validate and format data here:
-
     if (authUser) {
       // Add data to firebase here:
       db.collection("vintageWiki")
@@ -60,7 +57,7 @@ const AddWiki = ({ addNewItem }) => {
           console.log("Document successfully written!");
           resetForm();
           addNewItem({
-            name: wikiWord,
+            name: wikiWord.charAt(0).toUpperCase() + wikiWord.slice(1),
             description: wikiDescription,
             addedByUser: authUser.email,
             id: wikiWord
