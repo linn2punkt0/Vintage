@@ -93,6 +93,10 @@ const Events = () => {
     setFilteredEvents(events);
   };
 
+  const addNewItem = object => {
+    setEvents([...events, object]);
+  };
+
   // tagsFilter.forEach(tag => {
   //   console.log(`Tags: ${tag}`);
   // });
@@ -116,7 +120,6 @@ const Events = () => {
                 name="dateOrder"
                 id="dateOrder"
                 placeholder="Sortera datum"
-                // value={dateOrder}
                 onChange={e => setDateOrder(e.target.value)}
               >
                 <option value="asc">Sortera efter datum</option>
@@ -153,9 +156,18 @@ const Events = () => {
                         id="categories"
                         placeholder="Lägg till kategorier"
                         value={category.name}
-                        onChange={e =>
-                          setTagsFilter([...tagsFilter, e.target.value])
-                        }
+                        checked={tagsFilter.indexOf(category.name) !== -1}
+                        onChange={e => {
+                          if (tagsFilter.indexOf(category.name) === -1) {
+                            setTagsFilter([...tagsFilter, e.target.value]);
+                          } else {
+                            setTagsFilter(
+                              tagsFilter.filter(item => {
+                                return category.name !== item;
+                              })
+                            );
+                          }
+                        }}
                       />
                       <label htmlFor="categories">{category.name}</label>
                     </RowDiv>
@@ -172,10 +184,18 @@ const Events = () => {
                         id="timeperiods"
                         placeholder="Lägg till aktuella tidsperioder"
                         value={timeperiod.name}
-                        // checked={e.target.checked}
-                        onChange={e =>
-                          setTagsFilter([...tagsFilter, e.target.value])
-                        }
+                        checked={tagsFilter.indexOf(timeperiod.name) !== -1}
+                        onChange={e => {
+                          if (tagsFilter.indexOf(timeperiod.name) === -1) {
+                            setTagsFilter([...tagsFilter, e.target.value]);
+                          } else {
+                            setTagsFilter(
+                              tagsFilter.filter(item => {
+                                return timeperiod.name !== item;
+                              })
+                            );
+                          }
+                        }}
                       />
                       <label htmlFor="timeperiods">{timeperiod.name}</label>
                     </RowDiv>
@@ -214,6 +234,7 @@ const Events = () => {
           regions={regions}
           categories={categories}
           timeperiods={timeperiods}
+          addNewItem={addNewItem}
         />
       ) : (
         <h4>Logga in för att kunna lägga till nya events.</h4>

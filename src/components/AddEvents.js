@@ -79,7 +79,7 @@ const StyledSpecialInput = styled.input`
   margin: 0;
 `;
 
-const AddEvents = ({ regions, categories, timeperiods }) => {
+const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
   const db = app.firestore();
 
   // Event data, set by the user
@@ -205,6 +205,19 @@ const AddEvents = ({ regions, categories, timeperiods }) => {
         })
         .then(function() {
           resetForm();
+          addNewItem({
+            name: eventName.charAt(0).toUpperCase() + eventName.slice(1),
+            description: eventDescription,
+            city: eventCity.charAt(0).toUpperCase() + eventCity.slice(1),
+            region: eventRegion,
+            address: autocompletedAddress || eventAddress,
+            location: eventLocation,
+            startDate: new Date(eventStart),
+            endDate: new Date(eventEnd),
+            link: eventLink,
+            tags: eventTags,
+            id: eventName
+          });
           console.log("Document successfully written!");
         })
         .catch(function(error) {
@@ -347,7 +360,18 @@ const AddEvents = ({ regions, categories, timeperiods }) => {
                   id="categories"
                   placeholder="Lägg till kategorier"
                   value={category.name}
-                  onChange={e => setEventTags([...eventTags, e.target.value])}
+                  checked={eventTags.indexOf(category.name) !== -1}
+                  onChange={e => {
+                    if (eventTags.indexOf(category.name) === -1) {
+                      setEventTags([...eventTags, e.target.value]);
+                    } else {
+                      setEventTags(
+                        eventTags.filter(item => {
+                          return category.name !== item;
+                        })
+                      );
+                    }
+                  }}
                 />
                 <label htmlFor="categories">{category.name}</label>
               </RowDiv>
@@ -363,8 +387,18 @@ const AddEvents = ({ regions, categories, timeperiods }) => {
                   id="timeperiods"
                   placeholder="Lägg till aktuella tidsperioder"
                   value={timeperiod.name}
-                  // checked={}
-                  onChange={e => setEventTags([...eventTags, e.target.value])}
+                  checked={eventTags.indexOf(timeperiod.name) !== -1}
+                  onChange={e => {
+                    if (eventTags.indexOf(timeperiod.name) === -1) {
+                      setEventTags([...eventTags, e.target.value]);
+                    } else {
+                      setEventTags(
+                        eventTags.filter(item => {
+                          return timeperiod.name !== item;
+                        })
+                      );
+                    }
+                  }}
                 />
                 <label htmlFor="timeperiods">{timeperiod.name}</label>
               </RowDiv>
