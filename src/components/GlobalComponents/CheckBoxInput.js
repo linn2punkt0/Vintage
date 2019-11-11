@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const StyledInput = styled.input`
   height: ${({ height }) => height || "25px"};
-  width: ${({ height }) => height || "25px"};
+  width: ${({ width }) => width || "25px"};
   -webkit-appearance: none;
   -moz-appearance: none;
   -o-appearance: none;
@@ -34,7 +34,8 @@ const CheckBoxInput = props => {
     width,
     margin,
     value,
-    checkedColor
+    checkedColor,
+    checked
   } = props;
   return (
     <StyledInput
@@ -48,6 +49,7 @@ const CheckBoxInput = props => {
       margin={margin}
       value={value}
       checkedColor={checkedColor}
+      checked={checked}
     />
   );
 };
