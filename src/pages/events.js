@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
+// import { Helmet } from "react-helmet";
 import { getAllStartData, getFilteredEvents } from "../firebaseFunctions";
 import { useAuth } from "../context/auth";
 import EventOverview from "../components/EventOverview";
@@ -9,6 +9,7 @@ import ColumnDiv from "../components/GlobalComponents/ColumnDiv";
 import RowDiv from "../components/GlobalComponents/RowDiv";
 import CheckBoxInput from "../components/GlobalComponents/CheckBoxInput";
 import Button from "../components/GlobalComponents/Button";
+import SEO from "../components/GlobalComponents/SEO";
 // import Map from "../components/Map";
 
 const StyledEvents = styled.div``;
@@ -120,10 +121,15 @@ const Events = () => {
   // console.log(filteredEvents);
   return (
     <StyledEvents>
-      <Helmet>
-        <title>Vintage Sverige: Event & Mässor</title>
+      {/* <Helmet> */}
+      <SEO
+        title="Vintage Sverige: Event & Mässor"
+        description="Här hittar du vintage-mässor och event. TEST SEO COMPONENT"
+        url="http://vintagesverige.se/event-och-massor"
+      />
+      {/* <title>Vintage Sverige: Event & Mässor</title>
         {/* Facebook meta */}
-        <meta property="og:title" content="Vintage Sverige: Event & Mässor" />
+      {/* <meta property="og:title" content="Vintage Sverige: Event & Mässor" />
         <meta
           property="og:description"
           content="Här hittar du vintage-mässor och event."
@@ -132,10 +138,9 @@ const Events = () => {
         <meta
           property="og:url"
           content="http://vintagesverige.se/event-och-massor"
-        />
-
-        {/* Twitter meta */}
-        <meta name="twitter:title" content="Vintage Sverige: Event & Mässor" />
+        /> */}
+      {/* Twitter meta */}
+      {/* <meta name="twitter:title" content="Vintage Sverige: Event & Mässor" />
         <meta
           name="twitter:description"
           content="Här hittar du vintage-mässor och event."
@@ -144,15 +149,15 @@ const Events = () => {
           name="twitter:url"
           content="http://vintagesverige.se/event-och-massor"
         />
-        <meta name="twitter:image" content="/images/logoTest4.png" />
-
-        {/* standard meta */}
-        <meta property="title" content="Vintage Sverige: Event & Mässor" />
+        <meta name="twitter:image" content="/images/logoTest4.png" /> */}
+      {/* standard meta */}
+      {/* <meta property="title" content="Vintage Sverige: Event & Mässor" />
         <meta
           name="description"
           content="Här hittar du vintage-mässor och event."
-        />
-      </Helmet>
+        /> */}
+
+      {/* </Helmet> */}
       <h2>Här hittar du alla event!</h2>
       {!openFilter ? (
         <button type="button" onClick={() => setOpenFilter(true)}>
