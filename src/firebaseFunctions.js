@@ -25,7 +25,7 @@ export const getFilteredEvents = async (order, region, tags) => {
     query = query.where("region", "==", region);
   }
 
-  if (tags !== []) {
+  if (tags.length > 0) {
     query = query.where("tags", "array-contains-any", tags);
   }
 

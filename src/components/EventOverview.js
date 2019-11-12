@@ -40,7 +40,7 @@ const EventOverview = event => {
           <h3>{data.name}</h3>
           <h4>Startar: {timeConverter(startTimestamp)}</h4>
           <h4>Slutar: {timeConverter(endTimestamp)}</h4>
-          <h4>Plats: {data.address}</h4>
+          <h4>Plats: {data.address.description}</h4>
           <h4>Stad: {data.city}</h4>
           <p>{data.description}</p>
           <h4>

@@ -2,12 +2,12 @@
 const fetch = require("node-fetch");
 exports.handler = async function(event, context) {
   try {
-    const response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${event.queryStringParameters.input}&inputtype=textquery&key=${process.env.REACT_APP_GOOGLE_CLOUD_API_KEY}`,
-      {
-        headers: { Accept: "application/json" }
-      }
+    const url = new URL(
+      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${event.queryStringParameters.input}&key=${process.env.REACT_APP_GOOGLE_CLOUD_API_KEY}`
     );
+
+    const response = await fetch(url.href);
+
     if (!response.ok) {
       // NOT res.status >= 200 && res.status < 300
       return { statusCode: response.status, body: response.statusText };

@@ -79,7 +79,7 @@ const StyledSpecialInput = styled.input`
   margin: 0;
 `;
 
-const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
+const AddEvents = ({ regions, categories, timeperiods, reloadEvents }) => {
   const db = app.firestore();
 
   // Event data, set by the user
@@ -95,6 +95,8 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
 
   const [eventTags, setEventTags] = useState([]);
   const [autocompletedAddress, setAutocompletedAddress] = useState(null);
+
+  const [formErrors, setFormErrors] = useState([]);
 
   // Temp data
   const [addressPredictions, setAddressPredictions] = useState([]);
@@ -123,13 +125,13 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
   };
 
   // If any fields are empty disable submit-button
-  const isInvalid =
-    eventName === "" ||
-    eventStart === "" ||
-    eventAddress === "" ||
-    eventRegion === "" ||
-    eventDescription === "" ||
-    eventCity === "";
+  // const isInvalid =
+  //   eventName === "" ||
+  //   eventStart === "" ||
+  //   eventAddress === "" ||
+  //   eventRegion === "" ||
+  //   eventDescription === "" ||
+  //   eventCity === "";
 
   // Replace Å, Ä, Ö to avoid API-Errors
   const replaceSpecialChars = string => {
@@ -156,57 +158,43 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
       .then(response => response.json())
       .then(data => {
         data.msg.predictions.forEach(prediction => {
-          tempArray.push(prediction.description);
+          tempArray.push({
+            description: prediction.description,
+            id: prediction.place_id
+          });
         });
         setAddressPredictions([...tempArray]);
         setDisplayPredictions(true);
       });
   };
 
-  // NOT DONE
   const getLocation = () => {
-    const tempArray = [];
-    fetch(
-      `/.netlify/functions/location?input=${replaceSpecialChars(
-        autocompletedAddress || eventAddress
-      )}`,
-      {
-        headers: { accept: "Accept: application/json" }
-      }
-    )
+    fetch(`/.netlify/functions/location?input=${autocompletedAddress.id}`)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
-        // data.msg.predictions.forEach(prediction => {
-        //   tempArray.push(prediction.description);
-        // });
-        setEventLocation([...tempArray]);
+        setEventLocation(data.msg.result.geometry.location);
       });
+  };
+
+  const checkInput = () => {
+    if (eventName === "") {
+      setFormErrors([...formErrors, "Du måste fylla i ett namn för eventet."]);
+      return true;
+    }
+    return false;
   };
 
   // Add new event to Firebase
   const addNewEvent = e => {
     e.preventDefault();
-    if (authUser) {
-      // Add data to firebase here, validate and format data in the process
-      db.collection("events")
-        .doc(eventName + new Date())
-        .set({
-          name: eventName.charAt(0).toUpperCase() + eventName.slice(1),
-          description: eventDescription,
-          city: eventCity.charAt(0).toUpperCase() + eventCity.slice(1),
-          region: eventRegion,
-          address: autocompletedAddress || eventAddress,
-          location: eventLocation,
-          startDate: new Date(eventStart),
-          endDate: new Date(eventEnd),
-          link: eventLink,
-          addedByUser: authUser.email,
-          tags: eventTags
-        })
-        .then(function() {
-          resetForm();
-          addNewItem({
+    const errors = checkInput();
+    console.log(formErrors);
+    if (errors === false) {
+      if (authUser) {
+        // Add data to firebase here, validate and format data in the process
+        db.collection("events")
+          .doc(eventName + new Date())
+          .set({
             name: eventName.charAt(0).toUpperCase() + eventName.slice(1),
             description: eventDescription,
             city: eventCity.charAt(0).toUpperCase() + eventCity.slice(1),
@@ -216,14 +204,18 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
             startDate: new Date(eventStart),
             endDate: new Date(eventEnd),
             link: eventLink,
-            tags: eventTags,
-            id: eventName
+            addedByUser: authUser.email,
+            tags: eventTags
+          })
+          .then(function() {
+            resetForm();
+            reloadEvents({});
+            console.log("Document successfully written!");
+          })
+          .catch(function(error) {
+            console.error("Error writing document: ", error);
           });
-          console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-          console.error("Error writing document: ", error);
-        });
+      }
     }
   };
 
@@ -239,7 +231,7 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
     if (debouncedAddress) {
       getLocation();
     }
-  }, [debouncedAddress, debouncedAutocompleted]);
+  }, [debouncedAutocompleted]);
 
   const toggleEventTags = (e, tagType) => {
     if (eventTags.indexOf(tagType.name) === -1) {
@@ -289,13 +281,13 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
             {addressPredictions.map(prediction => (
               <button
                 type="submit"
-                key={prediction}
+                key={prediction.id}
                 onClick={() => {
                   setAutocompletedAddress(prediction);
                   setDisplayPredictions(false);
                 }}
               >
-                {prediction}
+                {prediction.description}
               </button>
             ))}
           </Predictions>
@@ -305,7 +297,7 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
             type="text"
             name="address2"
             id="address2"
-            value={autocompletedAddress}
+            value={autocompletedAddress.description}
             onChange={e => setAutocompletedAddress(e.target.value)}
           />
         )}
@@ -401,7 +393,7 @@ const AddEvents = ({ regions, categories, timeperiods, addNewItem }) => {
         <Button
           type="submit"
           onClick={addNewEvent}
-          disabled={isInvalid}
+          // disabled={isInvalid}
           bgColor="var(--bg-color)"
           color="var(--dark-text-color)"
         >
