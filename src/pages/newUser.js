@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import firebase from "../firebase";
 import { useAuth } from "../context/auth";
 import Button from "../components/GlobalComponents/Button";
 import Input from "../components/GlobalComponents/Input";
+import SEO from "../components/GlobalComponents/SEO";
 
 const StyledNewUser = styled.div`
   display: flex;
@@ -96,40 +96,11 @@ const NewUser = () => {
   console.log(userError);
   return (
     <StyledNewUser>
-      <Helmet>
-        <title>Vintage Sverige: Registrera dig</title>
-
-        {/* Facebook meta */}
-        <meta property="og:title" content="Vintage Sverige: Registrera dig" />
-        <meta
-          property="og:description"
-          content="Registrera dig för att bidra till Vintage Sverige. Lägg till events m.m."
-        />
-        <meta property="og:image" content="/images/logoTest4.png" />
-        <meta
-          property="og:url"
-          content="http://vintagesverige.se/registrera-dig"
-        />
-
-        {/* Twitter meta */}
-        <meta name="twitter:title" content="Vintage Sverige: Registrera dig" />
-        <meta
-          name="twitter:description"
-          content="Registrera dig för att bidra till Vintage Sverige. Lägg till events m.m."
-        />
-        <meta
-          name="twitter:url"
-          content="http://vintagesverige.se/registrera-dig"
-        />
-        <meta name="twitter:image" content="/images/logoTest4.png" />
-
-        {/* standard meta */}
-        <meta property="title" content="Vintage Sverige: Registrera dig" />
-        <meta
-          name="description"
-          content="Registrera dig för att bidra till Vintage Sverige. Lägg till events m.m."
-        />
-      </Helmet>
+      <SEO
+        title="Vintage Sverige: Registrera dig"
+        description="Registrera dig för att bidra till Vintage Sverige. Lägg till events m.m."
+        url="http://vintagesverige.se/registrera-dig"
+      />
       <h2>Registrera ditt konto här:</h2>
       {authUser ? (
         <h2>Du är redan inloggad</h2>

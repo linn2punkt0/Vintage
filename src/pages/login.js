@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import firebase from "../firebase";
 import { useAuth } from "../context/auth";
 import Button from "../components/GlobalComponents/Button";
 import Input from "../components/GlobalComponents/Input";
+import SEO from "../components/GlobalComponents/SEO";
 
 const StyledLogIn = styled.div`
   display: flex;
@@ -80,34 +80,11 @@ const LogIn = () => {
 
   return (
     <StyledLogIn>
-      <Helmet>
-        <title>Vintage Sverige: Logga in</title>
-
-        {/* Facebook meta */}
-        <meta property="og:title" content="Vintage Sverige: Logga in" />
-        <meta
-          property="og:description"
-          content="Logga in hos Vintage Sverige för att tipsa om event m.m."
-        />
-        <meta property="og:image" content="/images/logoTest4.png" />
-        <meta property="og:url" content="http://vintagesverige.se/logga-in" />
-
-        {/* Twitter meta */}
-        <meta name="twitter:title" content="Vintage Sverige: Logga in" />
-        <meta
-          name="twitter:description"
-          content="Logga in hos Vintage Sverige för att tipsa om event m.m."
-        />
-        <meta name="twitter:url" content="http://vintagesverige.se/logga-in" />
-        <meta name="twitter:image" content="/images/logoTest4.png" />
-
-        {/* standard meta */}
-        <meta property="title" content="Vintage Sverige: Logga in" />
-        <meta
-          name="description"
-          content="Logga in hos Vintage Sverige för att tipsa om event m.m."
-        />
-      </Helmet>
+      <SEO
+        title="Vintage Sverige: Logga in"
+        description="Logga in hos Vintage Sverige för att tipsa om event m.m."
+        url="http://vintagesverige.se/logga-in"
+      />
       {authUser ? (
         <>
           <h2>Du är inloggad</h2>

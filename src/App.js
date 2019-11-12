@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import { Helmet } from "react-helmet";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Home from "./pages/home";
 import Events from "./pages/events";
@@ -13,38 +12,16 @@ import About from "./pages/about";
 import Layout from "./layout";
 import { AuthProvider } from "./context/auth";
 import { MenuProvider } from "./context/menu";
+import SEO from "./components/GlobalComponents/SEO";
 
 function App() {
   return (
     <div className="App">
-      <Helmet>
-        <title>Vintage Sverige</title>
-
-        {/* Facebook meta */}
-        <meta property="og:title" content="Vintage Sverige" />
-        <meta
-          property="og:description"
-          content="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
-        />
-        <meta property="og:image" content="/images/logoTest4.png" />
-        <meta property="og:url" content="http://vintagesverige.se" />
-
-        {/* Twitter meta */}
-        <meta name="twitter:title" content="Vintage Sverige" />
-        <meta
-          name="twitter:description"
-          content="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
-        />
-        <meta name="twitter:url" content="http://vintagesverige.se" />
-        <meta name="twitter:image" content="/images/logoTest4.png" />
-
-        {/* standard meta */}
-        <meta property="title" content="Vintage Sverige" />
-        <meta
-          name="description"
-          content="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
-        />
-      </Helmet>
+      <SEO
+        title="Vintage Sverige"
+        description="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
+        url="http://vintagesverige.se/"
+      />
       <AuthProvider>
         <MenuProvider>
           <BrowserRouter>

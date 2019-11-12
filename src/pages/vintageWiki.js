@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
 import app from "../firebase";
 import { useAuth } from "../context/auth";
 import AddWiki from "../components/AddWiki";
+import SEO from "../components/GlobalComponents/SEO";
 
 const StyledVintageWiki = styled.div``;
 
@@ -37,40 +37,11 @@ const VintageWiki = () => {
 
   return (
     <StyledVintageWiki>
-      <Helmet>
-        <title>Vintage Sverige: VintageWiki</title>
-
-        {/* Facebook meta */}
-        <meta property="og:title" content="Vintage Sverige: VintageWiki" />
-        <meta
-          property="og:description"
-          content="Här kan du lägga till ord och begrepp i vår vintage-ordbok och tillsammans med oss bygga upp en stor kunskapsbank."
-        />
-        <meta property="og:image" content="/images/logoTest4.png" />
-        <meta
-          property="og:url"
-          content="http://vintagesverige.se/vintagewiki"
-        />
-
-        {/* Twitter meta */}
-        <meta name="twitter:title" content="Vintage Sverige: VintageWiki" />
-        <meta
-          name="twitter:description"
-          content="Här kan du lägga till ord och begrepp i vår vintage-ordbok och tillsammans med oss bygga upp en stor kunskapsbank."
-        />
-        <meta
-          name="twitter:url"
-          content="http://vintagesverige.se/vintagewiki"
-        />
-        <meta name="twitter:image" content="/images/logoTest4.png" />
-
-        {/* standard meta */}
-        <meta property="title" content="Vintage Sverige: VintageWiki" />
-        <meta
-          name="description"
-          content="Här kan du lägga till ord och begrepp i vår vintage-ordbok och tillsammans med oss bygga upp en stor kunskapsbank."
-        />
-      </Helmet>
+      <SEO
+        title="Vintage Sverige: VintageWiki"
+        description="Här kan du lägga till ord och begrepp i vår vintage-ordbok och tillsammans med oss bygga upp en stor kunskapsbank."
+        url="http://vintagesverige.se/vintagewiki"
+      />
       <h2>Här kommer det bli en VintageWiki.</h2>
       {wiki.map(item => (
         <StyledItem key={item.id}>

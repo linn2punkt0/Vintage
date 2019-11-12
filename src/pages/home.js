@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 // import ReactDOM from "react-dom";
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
 // import BlockContent from "@sanity/block-content-to-react";
 import { useAuth } from "../context/auth";
+import SEO from "../components/GlobalComponents/SEO";
 
 // const client = require("@sanity/client")({
 //   projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
@@ -58,37 +58,13 @@ const Home = () => {
   //   );
   // });
 
-  console.log(posts);
-
   return (
     <Styledhome>
-      <Helmet>
-        <title>Vintage Sverige</title>
-        {/* Facebook meta */}
-        <meta property="og:title" content="Vintage Sverige" />
-        <meta
-          property="og:description"
-          content="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
-        />
-        <meta property="og:image" content="/images/logoTest4.png" />
-        <meta property="og:url" content="http://vintagesverige.se/" />
-
-        {/* Twitter meta */}
-        <meta name="twitter:title" content="Vintage Sverige" />
-        <meta
-          name="twitter:description"
-          content="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
-        />
-        <meta name="twitter:url" content="http://vintagesverige.se" />
-        <meta name="twitter:image" content="/images/logoTest4.png" />
-
-        {/* standard meta */}
-        <meta property="title" content="Vintage Sverige" />
-        <meta
-          name="description"
-          content="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
-        />
-      </Helmet>
+      <SEO
+        title="Vintage Sverige"
+        description="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
+        url="http://vintagesverige.se/"
+      />
       <h2>Startsidan</h2>
       {authUser ? <h2>Du är inloggad</h2> : <h2>Du är inte inloggad</h2>}
       {posts.map(post => (

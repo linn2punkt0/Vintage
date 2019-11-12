@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-// import { Helmet } from "react-helmet";
 import { getAllStartData, getFilteredEvents } from "../firebaseFunctions";
 import { useAuth } from "../context/auth";
 import EventOverview from "../components/EventOverview";
@@ -121,43 +120,11 @@ const Events = () => {
   // console.log(filteredEvents);
   return (
     <StyledEvents>
-      {/* <Helmet> */}
       <SEO
         title="Vintage Sverige: Event & Mässor"
-        description="Här hittar du vintage-mässor och event. TEST SEO COMPONENT"
+        description="Här hittar du vintage-mässor och event."
         url="http://vintagesverige.se/event-och-massor"
       />
-      {/* <title>Vintage Sverige: Event & Mässor</title>
-        {/* Facebook meta */}
-      {/* <meta property="og:title" content="Vintage Sverige: Event & Mässor" />
-        <meta
-          property="og:description"
-          content="Här hittar du vintage-mässor och event."
-        />
-        <meta property="og:image" content="/images/logoTest4.png" />
-        <meta
-          property="og:url"
-          content="http://vintagesverige.se/event-och-massor"
-        /> */}
-      {/* Twitter meta */}
-      {/* <meta name="twitter:title" content="Vintage Sverige: Event & Mässor" />
-        <meta
-          name="twitter:description"
-          content="Här hittar du vintage-mässor och event."
-        />
-        <meta
-          name="twitter:url"
-          content="http://vintagesverige.se/event-och-massor"
-        />
-        <meta name="twitter:image" content="/images/logoTest4.png" /> */}
-      {/* standard meta */}
-      {/* <meta property="title" content="Vintage Sverige: Event & Mässor" />
-        <meta
-          name="description"
-          content="Här hittar du vintage-mässor och event."
-        /> */}
-
-      {/* </Helmet> */}
       <h2>Här hittar du alla event!</h2>
       {!openFilter ? (
         <button type="button" onClick={() => setOpenFilter(true)}>
