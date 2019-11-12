@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
+// import { Helmet } from "react-helmet";
+import SEO from "../components/GlobalComponents/SEO";
 
 const StyledAbout = styled.div`
   display: flex;
@@ -60,10 +61,15 @@ const StyledContributor = styled.div`
 const About = () => {
   return (
     <StyledAbout>
-      <Helmet>
-        <title>Vintage Sverige: Om sidan</title>
-        {/* Facebook meta */}
-        <meta property="og:title" content="Vintage Sverige: Om sidan" />
+      <SEO
+        title="Vintage Sverige: Om sidan"
+        description="Här kan du läsa mer om Vintage Sverige, TEST SEO COMPONENT"
+        url="http://vintagesverige.se/om-vintage-sverige"
+      />
+      {/* <Helmet>
+        <title>Vintage Sverige: Om sidan</title> */}
+      {/* Facebook meta */}
+      {/* <meta property="og:title" content="Vintage Sverige: Om sidan" />
         <meta
           property="og:description"
           content="Här kan du läsa mer om Vintage Sverige"
@@ -72,10 +78,10 @@ const About = () => {
         <meta
           property="og:url"
           content="http://vintagesverige.se/om-vintage-sverige"
-        />
+        /> */}
 
-        {/* Twitter meta */}
-        <meta name="twitter:title" content="Vintage Sverige: Om sidan" />
+      {/* Twitter meta */}
+      {/* <meta name="twitter:title" content="Vintage Sverige: Om sidan" />
         <meta
           name="twitter:description"
           content="Här kan du läsa mer om Vintage Sverige"
@@ -84,15 +90,15 @@ const About = () => {
           name="twitter:url"
           content="http://vintagesverige.se/om-vintage-sverige"
         />
-        <meta name="twitter:image" content="/images/logoTest4.png" />
+        <meta name="twitter:image" content="/images/logoTest4.png" /> */}
 
-        {/* standard meta */}
-        <meta property="title" content="Vintage Sverige: Om sidan" />
+      {/* standard meta */}
+      {/* <meta property="title" content="Vintage Sverige: Om sidan" />
         <meta
           name="description"
           content="Här kan du läsa mer om Vintage Sverige"
         />
-      </Helmet>
+      </Helmet> */}
       <h2>Om Vintage Sverige</h2>
       <StyledAboutSiteBlock>
         <p>
