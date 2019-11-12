@@ -4,7 +4,6 @@ import styled from "styled-components";
 const StyledButton = styled.button`
   min-height: 40px;
   width: 10em;
-  /* background-color: var(--primary-button-color); */
   background-color: ${({ bgColor }) =>
     bgColor || "var(--primary-button-color)"};
   color: ${({ color }) => color || "var(--light-text-color)"};
@@ -27,13 +26,14 @@ const StyledButton = styled.button`
 `;
 
 const Button = props => {
-  const { children, onClick, margin, bgColor, color } = props;
+  const { children, onClick, margin, bgColor, color, disabled } = props;
   return (
     <StyledButton
       color={color}
       bgColor={bgColor}
       margin={margin}
       onClick={onClick}
+      disabled={disabled}
     >
       <div>{children}</div>
     </StyledButton>
