@@ -123,7 +123,7 @@ const Events = () => {
       <Helmet>
         <title>Vintage Sverige: Event & Mässor</title>
         {/* Facebook meta */}
-        <meta property="og:title" content="Vintage Sverige: Om sidan" />
+        <meta property="og:title" content="Vintage Sverige: Event & Mässor" />
         <meta
           property="og:description"
           content="Här hittar du vintage-mässor och event."
@@ -135,7 +135,7 @@ const Events = () => {
         />
 
         {/* Twitter meta */}
-        <meta name="twitter:title" content="Vintage Sverige: Om sidan" />
+        <meta name="twitter:title" content="Vintage Sverige: Event & Mässor" />
         <meta
           name="twitter:description"
           content="Här hittar du vintage-mässor och event."
@@ -147,7 +147,7 @@ const Events = () => {
         <meta name="twitter:image" content="/images/logoTest4.png" />
 
         {/* standard meta */}
-        <meta property="title" content="Vintage Sverige: Om sidan" />
+        <meta property="title" content="Vintage Sverige: Event & Mässor" />
         <meta
           name="description"
           content="Här hittar du vintage-mässor och event."
