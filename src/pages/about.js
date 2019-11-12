@@ -62,6 +62,12 @@ const About = () => {
     <StyledAbout>
       <Helmet>
         <title>Vintage Sverige: Om sidan</title>
+        <meta property="title" content="Vintage Sverige: Om sidan" />
+        <meta property="og:title" content="Vintage Sverige: Om sidan" />
+        <meta
+          property="og:description"
+          content="Här kan du läsa mer om Vintage Sverige"
+        />
         <meta
           name="description"
           content="Här kan du läsa mer om Vintage Sverige"

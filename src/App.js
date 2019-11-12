@@ -19,6 +19,12 @@ function App() {
     <div className="App">
       <Helmet>
         <title>Vintage Sverige</title>
+        <meta property="title" content="Vintage Sverige" />
+        <meta property="og:title" content="Vintage Sverige" />
+        <meta
+          property="og:description"
+          content="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
+        />
         <meta
           name="description"
           content="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
