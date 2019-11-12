@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 import { getAllStartData, getFilteredEvents } from "../firebaseFunctions";
 import { useAuth } from "../context/auth";
 import EventOverview from "../components/EventOverview";
@@ -8,6 +9,7 @@ import ColumnDiv from "../components/GlobalComponents/ColumnDiv";
 import RowDiv from "../components/GlobalComponents/RowDiv";
 import CheckBoxInput from "../components/GlobalComponents/CheckBoxInput";
 import Button from "../components/GlobalComponents/Button";
+// import Map from "../components/Map";
 
 const StyledEvents = styled.div``;
 
@@ -93,8 +95,9 @@ const Events = () => {
     setFilteredEvents(events);
   };
 
-  const addNewItem = object => {
-    setEvents([...events, object]);
+  const reloadEvents = async () => {
+    const response = await getAllStartData("events");
+    setEvents(response);
   };
 
   const toggleTags = (e, tagType) => {
@@ -113,8 +116,17 @@ const Events = () => {
   //   console.log(`Tags: ${tag}`);
   // });
 
+  // console.log(events);
+  // console.log(filteredEvents);
   return (
     <StyledEvents>
+      <Helmet>
+        <title>Vintage Sverige: Event & Mässor</title>
+        <meta
+          name="description"
+          content="Här hittar du vintage-mässor och event."
+        />
+      </Helmet>
       <h2>Här hittar du alla event!</h2>
       {!openFilter ? (
         <button type="button" onClick={() => setOpenFilter(true)}>
@@ -211,6 +223,7 @@ const Events = () => {
           </FilterBlock>
         </>
       )}
+      {/* <Map events={events} /> */}
       <EventContainer>
         {filteredEvents.length > 0
           ? filteredEvents.map(event => (
@@ -226,7 +239,7 @@ const Events = () => {
           regions={regions}
           categories={categories}
           timeperiods={timeperiods}
-          addNewItem={addNewItem}
+          reloadEvents={reloadEvents}
         />
       ) : (
         <h4>Logga in för att kunna lägga till nya events.</h4>

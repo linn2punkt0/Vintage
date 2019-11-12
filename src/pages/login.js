@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import firebase from "../firebase";
 import { useAuth } from "../context/auth";
@@ -79,6 +80,13 @@ const LogIn = () => {
 
   return (
     <StyledLogIn>
+      <Helmet>
+        <title>Vintage Sverige: Logga in</title>
+        <meta
+          name="description"
+          content="Logga in hos Vintage Sverige för att tipsa om event m.m."
+        />
+      </Helmet>
       {authUser ? (
         <>
           <h2>Du är inloggad</h2>

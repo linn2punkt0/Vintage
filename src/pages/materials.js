@@ -1,11 +1,19 @@
 import React from "react";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 
 const StyledMaterials = styled.div``;
 
 const Materials = () => {
   return (
     <StyledMaterials>
+      <Helmet>
+        <title>Vintage Sverige: Material & Klädvård</title>
+        <meta
+          name="description"
+          content="Här kan du läsa om olika material och hur du bäst tar hand om dina vintage-kläder."
+        />
+      </Helmet>
       <h2>Här kan du läsa på om material och skötselråd.</h2>
 
       <h3>Materialguide</h3>

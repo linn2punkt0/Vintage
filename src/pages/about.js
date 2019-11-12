@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 
 const StyledAbout = styled.div`
   display: flex;
@@ -59,6 +60,13 @@ const StyledContributor = styled.div`
 const About = () => {
   return (
     <StyledAbout>
+      <Helmet>
+        <title>Vintage Sverige: Om sidan</title>
+        <meta
+          name="description"
+          content="Här kan du läsa mer om Vintage Sverige"
+        />
+      </Helmet>
       <h2>Om Vintage Sverige</h2>
       <StyledAboutSiteBlock>
         <p>
