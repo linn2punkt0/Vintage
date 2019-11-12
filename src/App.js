@@ -35,8 +35,8 @@ function App() {
           name="twitter:description"
           content="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
         />
-        <meta name="twitter:image" content="http://vintagesverige.se" />
-        <meta name="twitter:card" content="/images/logoTest4.png" />
+        <meta name="twitter:url" content="http://vintagesverige.se" />
+        <meta name="twitter:image" content="/images/logoTest4.png" />
 
         {/* standard meta */}
         <meta property="title" content="Vintage Sverige" />

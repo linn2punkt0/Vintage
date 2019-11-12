@@ -9,10 +9,42 @@ const Materials = () => {
     <StyledMaterials>
       <Helmet>
         <title>Vintage Sverige: Material & Klädvård</title>
+
+        {/* Facebook meta */}
+        <meta
+          property="og:title"
+          content="Vintage Sverige: Material & Klädvård"
+        />
+        <meta
+          property="og:description"
+          content="Här kan du läsa om olika material och hur du bäst tar hand om dina vintage-kläder."
+        />
+        <meta property="og:image" content="/images/logoTest4.png" />
+        <meta
+          property="og:url"
+          content="http://vintagesverige.se/material-och-kladvard"
+        />
+
+        {/* Twitter meta */}
+        <meta
+          name="twitter:title"
+          content="Vintage Sverige: Material & Klädvård"
+        />
+        <meta
+          name="twitter:description"
+          content="Här kan du läsa om olika material och hur du bäst tar hand om dina vintage-kläder."
+        />
+        <meta
+          name="twitter:url"
+          content="http://vintagesverige.se/material-och-kladvard"
+        />
+        <meta name="twitter:image" content="/images/logoTest4.png" />
+
+        {/* standard meta */}
+        <meta property="title" content="Vintage Sverige: Material & Klädvård" />
         <meta
           name="description"
           content="Här kan du läsa om olika material och hur du bäst tar hand om dina vintage-kläder."
-          data-react-helmet="true"
         />
       </Helmet>
       <h2>Här kan du läsa på om material och skötselråd.</h2>

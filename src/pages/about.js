@@ -62,16 +62,35 @@ const About = () => {
     <StyledAbout>
       <Helmet>
         <title>Vintage Sverige: Om sidan</title>
-        <meta property="title" content="Vintage Sverige: Om sidan" />
+        {/* Facebook meta */}
         <meta property="og:title" content="Vintage Sverige: Om sidan" />
         <meta
           property="og:description"
           content="Här kan du läsa mer om Vintage Sverige"
         />
+        <meta property="og:image" content="/images/logoTest4.png" />
+        <meta
+          property="og:url"
+          content="http://vintagesverige.se/om-vintage-sverige"
+        />
+
+        {/* Twitter meta */}
+        <meta name="twitter:title" content="Vintage Sverige: Om sidan" />
+        <meta
+          name="twitter:description"
+          content="Här kan du läsa mer om Vintage Sverige"
+        />
+        <meta
+          name="twitter:url"
+          content="http://vintagesverige.se/om-vintage-sverige"
+        />
+        <meta name="twitter:image" content="/images/logoTest4.png" />
+
+        {/* standard meta */}
+        <meta property="title" content="Vintage Sverige: Om sidan" />
         <meta
           name="description"
           content="Här kan du läsa mer om Vintage Sverige"
-          data-react-helmet="true"
         />
       </Helmet>
       <h2>Om Vintage Sverige</h2>

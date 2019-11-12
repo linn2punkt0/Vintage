@@ -39,10 +39,36 @@ const VintageWiki = () => {
     <StyledVintageWiki>
       <Helmet>
         <title>Vintage Sverige: VintageWiki</title>
+
+        {/* Facebook meta */}
+        <meta property="og:title" content="Vintage Sverige: VintageWiki" />
+        <meta
+          property="og:description"
+          content="Här kan du lägga till ord och begrepp i vår vintage-ordbok och tillsammans med oss bygga upp en stor kunskapsbank."
+        />
+        <meta property="og:image" content="/images/logoTest4.png" />
+        <meta
+          property="og:url"
+          content="http://vintagesverige.se/vintagewiki"
+        />
+
+        {/* Twitter meta */}
+        <meta name="twitter:title" content="Vintage Sverige: VintageWiki" />
+        <meta
+          name="twitter:description"
+          content="Här kan du lägga till ord och begrepp i vår vintage-ordbok och tillsammans med oss bygga upp en stor kunskapsbank."
+        />
+        <meta
+          name="twitter:url"
+          content="http://vintagesverige.se/vintagewiki"
+        />
+        <meta name="twitter:image" content="/images/logoTest4.png" />
+
+        {/* standard meta */}
+        <meta property="title" content="Vintage Sverige: VintageWiki" />
         <meta
           name="description"
           content="Här kan du lägga till ord och begrepp i vår vintage-ordbok och tillsammans med oss bygga upp en stor kunskapsbank."
-          data-react-helmet="true"
         />
       </Helmet>
       <h2>Här kommer det bli en VintageWiki.</h2>

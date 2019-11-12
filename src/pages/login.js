@@ -82,10 +82,30 @@ const LogIn = () => {
     <StyledLogIn>
       <Helmet>
         <title>Vintage Sverige: Logga in</title>
+
+        {/* Facebook meta */}
+        <meta property="og:title" content="Vintage Sverige: Logga in" />
+        <meta
+          property="og:description"
+          content="Logga in hos Vintage Sverige för att tipsa om event m.m."
+        />
+        <meta property="og:image" content="/images/logoTest4.png" />
+        <meta property="og:url" content="http://vintagesverige.se/logga-in" />
+
+        {/* Twitter meta */}
+        <meta name="twitter:title" content="Vintage Sverige: Logga in" />
+        <meta
+          name="twitter:description"
+          content="Logga in hos Vintage Sverige för att tipsa om event m.m."
+        />
+        <meta name="twitter:url" content="http://vintagesverige.se/logga-in" />
+        <meta name="twitter:image" content="/images/logoTest4.png" />
+
+        {/* standard meta */}
+        <meta property="title" content="Vintage Sverige: Logga in" />
         <meta
           name="description"
           content="Logga in hos Vintage Sverige för att tipsa om event m.m."
-          data-react-helmet="true"
         />
       </Helmet>
       {authUser ? (

@@ -98,10 +98,36 @@ const NewUser = () => {
     <StyledNewUser>
       <Helmet>
         <title>Vintage Sverige: Registrera dig</title>
+
+        {/* Facebook meta */}
+        <meta property="og:title" content="Vintage Sverige: Registrera dig" />
+        <meta
+          property="og:description"
+          content="Registrera dig för att bidra till Vintage Sverige. Lägg till events m.m."
+        />
+        <meta property="og:image" content="/images/logoTest4.png" />
+        <meta
+          property="og:url"
+          content="http://vintagesverige.se/registrera-dig"
+        />
+
+        {/* Twitter meta */}
+        <meta name="twitter:title" content="Vintage Sverige: Registrera dig" />
+        <meta
+          name="twitter:description"
+          content="Registrera dig för att bidra till Vintage Sverige. Lägg till events m.m."
+        />
+        <meta
+          name="twitter:url"
+          content="http://vintagesverige.se/registrera-dig"
+        />
+        <meta name="twitter:image" content="/images/logoTest4.png" />
+
+        {/* standard meta */}
+        <meta property="title" content="Vintage Sverige: Registrera dig" />
         <meta
           name="description"
           content="Registrera dig för att bidra till Vintage Sverige. Lägg till events m.m."
-          data-react-helmet="true"
         />
       </Helmet>
       <h2>Registrera ditt konto här:</h2>
