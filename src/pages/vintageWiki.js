@@ -42,6 +42,7 @@ const VintageWiki = () => {
         <meta
           name="description"
           content="Här kan du lägga till ord och begrepp i vår vintage-ordbok och tillsammans med oss bygga upp en stor kunskapsbank."
+          data-react-helmet="true"
         />
       </Helmet>
       <h2>Här kommer det bli en VintageWiki.</h2>

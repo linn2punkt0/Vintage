@@ -12,6 +12,7 @@ const Materials = () => {
         <meta
           name="description"
           content="Här kan du läsa om olika material och hur du bäst tar hand om dina vintage-kläder."
+          data-react-helmet="true"
         />
       </Helmet>
       <h2>Här kan du läsa på om material och skötselråd.</h2>

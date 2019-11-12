@@ -65,6 +65,7 @@ const About = () => {
         <meta
           name="description"
           content="Här kan du läsa mer om Vintage Sverige"
+          data-react-helmet="true"
         />
       </Helmet>
       <h2>Om Vintage Sverige</h2>

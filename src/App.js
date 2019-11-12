@@ -22,6 +22,7 @@ function App() {
         <meta
           name="description"
           content="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
+          data-react-helmet="true"
         />
       </Helmet>
       <AuthProvider>

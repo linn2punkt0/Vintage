@@ -19,13 +19,25 @@ const StyledNewUser = styled.div`
   }
 `;
 
+const ErrorContainer = styled.div`
+  width: 80%;
+  height: 40px;
+  border: solid 1px red;
+  border-radius: 5px;
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
 const NewUser = () => {
   // These are good for now
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userPassword2, setUserPassword2] = useState("");
-  const [username, setUsername] = useState("");
-  const [userError, setUserError] = useState("");
+  // const [username, setUsername] = useState("");
+  const [userError, setUserError] = useState(false);
 
   // Do something while loading
   // eslint-disable-next-line no-unused-vars
@@ -35,17 +47,17 @@ const NewUser = () => {
   const { authUser } = useAuth();
 
   // If any fields are empty or if passwords do not match, disable submit-button
-  const isInvalid =
-    userPassword !== userPassword2 ||
-    userPassword === "" ||
-    userEmail === "" ||
-    username === "";
+  // const isInvalid =
+  //   userPassword !== userPassword2 ||
+  //   userPassword === "" ||
+  //   userEmail === "" ||
+  //   username === "";
 
   const resetInput = () => {
     setUserEmail("");
     setUserPassword("");
     setUserPassword2("");
-    setUsername("");
+    // setUsername("");
     setUserError("");
   };
 
@@ -53,19 +65,35 @@ const NewUser = () => {
     e.preventDefault();
     setLoading(true);
     setUserError(null);
-    try {
-      await firebase
-        .auth()
-        .createUserWithEmailAndPassword(userEmail, userPassword);
-      // redirect user?
-    } catch (err) {
-      setUserError(err);
-    } finally {
-      setLoading(false);
-      resetInput();
+    if (userPassword !== "" && userPassword !== userPassword2) {
+      setUserError("Lösenorden måste matcha.");
+    } else {
+      try {
+        await firebase
+          .auth()
+          .createUserWithEmailAndPassword(userEmail, userPassword);
+        // redirect user?
+      } catch (err) {
+        if (err === "auth/invalid-email") {
+          setUserError("Ogiltig epostadress");
+        }
+        if (err === "auth/weak-password") {
+          setUserError("Lösenordet måste vara minst 6 tecken.");
+        }
+        if (err === "auth/email-already-in-use") {
+          setUserError("Epost-adressen används redan");
+        }
+        // setUserError(err);
+      } finally {
+        setLoading(false);
+        if (!userError) {
+          resetInput();
+        }
+      }
     }
   };
 
+  console.log(userError);
   return (
     <StyledNewUser>
       <Helmet>
@@ -73,6 +101,7 @@ const NewUser = () => {
         <meta
           name="description"
           content="Registrera dig för att bidra till Vintage Sverige. Lägg till events m.m."
+          data-react-helmet="true"
         />
       </Helmet>
       <h2>Registrera ditt konto här:</h2>
@@ -87,14 +116,14 @@ const NewUser = () => {
             fylla i din email och ett lösenord.
           </p>
           <form>
-            <Input
+            {/* <Input
               type="text"
               name="username"
               id="username"
               placeholder="username"
               value={username}
               onChange={e => setUsername(e.target.value)}
-            />
+            /> */}
             <Input
               type="text"
               name="email"
@@ -121,10 +150,15 @@ const NewUser = () => {
               value={userPassword2}
               onChange={e => setUserPassword2(e.target.value)}
             />
+            {userError && (
+              <ErrorContainer>
+                <p>{userError}</p>
+              </ErrorContainer>
+            )}
             <Button
               type="submit"
               onClick={submitForm}
-              disabled={isInvalid}
+              // disabled={isInvalid}
               margin="0 0 1em 0"
               bgColor="var(--secondary-button-color)"
             >
@@ -137,7 +171,7 @@ const NewUser = () => {
         </>
       )}
 
-      {userError && <p>{userError.message}</p>}
+      {/* {userError && <p>{userError.message}</p>} */}
     </StyledNewUser>
   );
 };

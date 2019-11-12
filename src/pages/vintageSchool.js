@@ -12,6 +12,7 @@ const VintageSchool = () => {
         <meta
           name="description"
           content="Härkan du bli vintage-expert och lära dig hur du känner igen kläder ifårn olika tidsperioder. "
+          data-react-helmet="true"
         />
       </Helmet>
       <h2>

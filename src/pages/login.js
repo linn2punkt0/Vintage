@@ -85,6 +85,7 @@ const LogIn = () => {
         <meta
           name="description"
           content="Logga in hos Vintage Sverige för att tipsa om event m.m."
+          data-react-helmet="true"
         />
       </Helmet>
       {authUser ? (

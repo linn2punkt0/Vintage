@@ -125,6 +125,7 @@ const Events = () => {
         <meta
           name="description"
           content="Här hittar du vintage-mässor och event."
+          data-react-helmet="true"
         />
       </Helmet>
       <h2>Här hittar du alla event!</h2>
