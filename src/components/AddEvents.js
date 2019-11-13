@@ -10,6 +10,7 @@ import Input from "./GlobalComponents/Input";
 import CheckBoxInput from "./GlobalComponents/CheckBoxInput";
 import ColumnDiv from "./GlobalComponents/ColumnDiv";
 import RowDiv from "./GlobalComponents/RowDiv";
+import ErrorContainer from "./GlobalComponents/ErrorContainer";
 
 const StyledAddEvents = styled.div`
   display: flex;
@@ -92,15 +93,14 @@ const AddEvents = ({ regions, categories, timeperiods, reloadEvents }) => {
   const [eventRegion, setEventRegion] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [eventLink, setEventLink] = useState("");
-
   const [eventTags, setEventTags] = useState([]);
   const [autocompletedAddress, setAutocompletedAddress] = useState(null);
-
-  const [formErrors, setFormErrors] = useState([]);
 
   // Temp data
   const [addressPredictions, setAddressPredictions] = useState([]);
   const [displayPredictions, setDisplayPredictions] = useState(false);
+
+  const [formErrors, setFormErrors] = useState([]);
 
   const debouncedAddress = useDebounce(eventAddress, 800);
   const debouncedAutocompleted = useDebounce(autocompletedAddress, 800);
@@ -122,16 +122,8 @@ const AddEvents = ({ regions, categories, timeperiods, reloadEvents }) => {
     setAddressPredictions([]);
     setDisplayPredictions(false);
     setEventTags([]);
+    setFormErrors([]);
   };
-
-  // If any fields are empty disable submit-button
-  // const isInvalid =
-  //   eventName === "" ||
-  //   eventStart === "" ||
-  //   eventAddress === "" ||
-  //   eventRegion === "" ||
-  //   eventDescription === "" ||
-  //   eventCity === "";
 
   // Replace Å, Ä, Ö to avoid API-Errors
   const replaceSpecialChars = string => {
@@ -168,6 +160,7 @@ const AddEvents = ({ regions, categories, timeperiods, reloadEvents }) => {
       });
   };
 
+  // Get location details from id
   const getLocation = () => {
     fetch(`/.netlify/functions/location?input=${autocompletedAddress.id}`)
       .then(response => response.json())
@@ -176,20 +169,45 @@ const AddEvents = ({ regions, categories, timeperiods, reloadEvents }) => {
       });
   };
 
+  // Check input and add errors if somethings missing
   const checkInput = () => {
+    const tempArray = [];
     if (eventName === "") {
-      setFormErrors([...formErrors, "Du måste fylla i ett namn för eventet."]);
-      return true;
+      tempArray.push("Du måste fylla i ett namn för eventet.");
     }
-    return false;
+    if (eventDescription === "") {
+      tempArray.push("Du måste fylla i en beskrivning om eventet.");
+    }
+    if (eventCity === "") {
+      tempArray.push("Du måste ange vilket stad eventet är i.");
+    }
+    if (eventRegion === "") {
+      tempArray.push("Du måste ange vilket region eventet är i.");
+    }
+    if (eventAddress === "") {
+      tempArray.push("Du måste fylla i en address för eventet.");
+    }
+    if (autocompletedAddress === "") {
+      tempArray.push(
+        "Du måste klicka i ett av adress-förslagen som kommer upp."
+      );
+    }
+    if (eventStart === "") {
+      tempArray.push("Du måste ange startdatum.");
+    }
+    if (eventEnd === "") {
+      tempArray.push("Du måste ange slutdatum.");
+    }
+    setFormErrors(tempArray);
+    return tempArray;
   };
 
   // Add new event to Firebase
-  const addNewEvent = e => {
+  const addNewEvent = async e => {
     e.preventDefault();
-    const errors = checkInput();
-    console.log(formErrors);
-    if (errors === false) {
+    const errors = await checkInput();
+
+    if (errors.length === 0) {
       if (authUser) {
         // Add data to firebase here, validate and format data in the process
         db.collection("events")
@@ -226,13 +244,14 @@ const AddEvents = ({ regions, categories, timeperiods, reloadEvents }) => {
     }
   }, [debouncedAddress]);
 
-  // Run getLocation-function when adress is set
+  // Run getLocation-function when autocompletedAdress is set
   useEffect(() => {
     if (debouncedAddress) {
       getLocation();
     }
   }, [debouncedAutocompleted]);
 
+  // Toggle checkboxes onClick
   const toggleEventTags = (e, tagType) => {
     if (eventTags.indexOf(tagType.name) === -1) {
       setEventTags([...eventTags, e.target.value]);
@@ -390,10 +409,16 @@ const AddEvents = ({ regions, categories, timeperiods, reloadEvents }) => {
             ))}
           </ColumnDiv>
         </RowDiv>
+        {formErrors.length > 0 && (
+          <ErrorContainer>
+            {formErrors.map(error => (
+              <p key={error}>{error}</p>
+            ))}
+          </ErrorContainer>
+        )}
         <Button
           type="submit"
           onClick={addNewEvent}
-          // disabled={isInvalid}
           bgColor="var(--bg-color)"
           color="var(--dark-text-color)"
         >

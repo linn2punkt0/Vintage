@@ -10,10 +10,15 @@ import CheckBoxInput from "../components/GlobalComponents/CheckBoxInput";
 import Button from "../components/GlobalComponents/Button";
 import SEO from "../components/GlobalComponents/SEO";
 import Map from "../components/Map";
+import ErrorContainer from "../components/GlobalComponents/ErrorContainer";
 
 const StyledEvents = styled.div``;
 
 const FilterBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border: solid 1px black;
   border-radius: 5px;
 
@@ -50,12 +55,13 @@ const Events = () => {
   const [dateOrder, setDateOrder] = useState("asc");
   const [regionFilter, setRegionFilter] = useState("");
   const [tagsFilter, setTagsFilter] = useState([]);
-
+  const [userError, setUserError] = useState("");
   const [openFilter, setOpenFilter] = useState(false);
 
   // Get user if logged in
   const { authUser } = useAuth();
 
+  // Fetch all start data
   useEffect(() => {
     const fetchEvents = async () => {
       const response = await getAllStartData("events");
@@ -79,6 +85,21 @@ const Events = () => {
     fetchCategories();
   }, []);
 
+  // Add error if user checks more than 10 tags
+  useEffect(() => {
+    const countTags = () => {
+      if (tagsFilter.length > 1) {
+        setUserError(
+          "Du får max bocka i 10 rutor. (Kategorier och Tidsperioder)"
+        );
+      } else {
+        setUserError("");
+      }
+    };
+    countTags();
+  }, [tagsFilter]);
+
+  // Sort and filter events by date, region and tags
   const filterEvents = async () => {
     const response = await getFilteredEvents(
       dateOrder,
@@ -88,6 +109,7 @@ const Events = () => {
     setFilteredEvents(response);
   };
 
+  // Reset all filters
   const clearFilters = () => {
     setRegionFilter("");
     setDateOrder("asc");
@@ -95,11 +117,13 @@ const Events = () => {
     setFilteredEvents(events);
   };
 
+  // Fetch all events again, used after submitting new event
   const reloadEvents = async () => {
     const response = await getAllStartData("events");
     setEvents(response);
   };
 
+  // Toggle checkboxes onClick
   const toggleTags = (e, tagType) => {
     if (tagsFilter.indexOf(tagType.name) === -1) {
       setTagsFilter([...tagsFilter, e.target.value]);
@@ -112,12 +136,6 @@ const Events = () => {
     }
   };
 
-  // tagsFilter.forEach(tag => {
-  //   console.log(`Tags: ${tag}`);
-  // });
-
-  // console.log(events);
-  // console.log(filteredEvents);
   return (
     <StyledEvents>
       <SEO
@@ -136,6 +154,11 @@ const Events = () => {
             Stäng filter
           </button>
           <FilterBlock>
+            {userError !== "" && (
+              <ErrorContainer>
+                <p>{userError}</p>
+              </ErrorContainer>
+            )}
             <RowDiv>
               <select
                 type="text"
@@ -204,20 +227,22 @@ const Events = () => {
                   ))}
               </ColumnDiv>
             </RowDiv>
-            <Button
-              type="button"
-              margin=" 0 0.5em 1em 0"
-              onClick={() => filterEvents()}
-            >
-              Filtrera
-            </Button>
-            <Button
-              type="button"
-              margin=" 0 0 1em 0.5em"
-              onClick={() => clearFilters()}
-            >
-              Rensa filter
-            </Button>
+            <RowDiv justify="center">
+              <Button
+                type="button"
+                margin=" 0 0.5em 1em 0"
+                onClick={() => filterEvents()}
+              >
+                Filtrera
+              </Button>
+              <Button
+                type="button"
+                margin=" 0 0 1em 0.5em"
+                onClick={() => clearFilters()}
+              >
+                Rensa filter
+              </Button>
+            </RowDiv>
           </FilterBlock>
         </>
       )}

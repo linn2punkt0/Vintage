@@ -6,6 +6,7 @@ import { useAuth } from "../context/auth";
 import Button from "../components/GlobalComponents/Button";
 import Input from "../components/GlobalComponents/Input";
 import SEO from "../components/GlobalComponents/SEO";
+import ErrorContainer from "../components/GlobalComponents/ErrorContainer";
 
 const StyledNewUser = styled.div`
   display: flex;
@@ -19,25 +20,13 @@ const StyledNewUser = styled.div`
   }
 `;
 
-const ErrorContainer = styled.div`
-  width: 80%;
-  height: 40px;
-  border: solid 1px red;
-  border-radius: 5px;
-  margin: 5px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
 const NewUser = () => {
   // These are good for now
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userPassword2, setUserPassword2] = useState("");
   // const [username, setUsername] = useState("");
-  const [userError, setUserError] = useState(false);
+  const [userError, setUserError] = useState("");
 
   // Do something while loading
   // eslint-disable-next-line no-unused-vars
@@ -46,13 +35,7 @@ const NewUser = () => {
   // Get user if logged in
   const { authUser } = useAuth();
 
-  // If any fields are empty or if passwords do not match, disable submit-button
-  // const isInvalid =
-  //   userPassword !== userPassword2 ||
-  //   userPassword === "" ||
-  //   userEmail === "" ||
-  //   username === "";
-
+  // Reset form after submitting
   const resetInput = () => {
     setUserEmail("");
     setUserPassword("");
@@ -61,11 +44,12 @@ const NewUser = () => {
     setUserError("");
   };
 
+  // Create user, display error in swedish if firebase returns error
   const submitForm = async e => {
     e.preventDefault();
     setLoading(true);
     setUserError(null);
-    if (userPassword !== "" && userPassword !== userPassword2) {
+    if (userPassword === "" || userPassword !== userPassword2) {
       setUserError("Lösenorden måste matcha.");
     } else {
       try {
@@ -74,26 +58,24 @@ const NewUser = () => {
           .createUserWithEmailAndPassword(userEmail, userPassword);
         // redirect user?
       } catch (err) {
-        if (err === "auth/invalid-email") {
+        if (err.code === "auth/invalid-email") {
           setUserError("Ogiltig epostadress");
         }
-        if (err === "auth/weak-password") {
+        if (err.code === "auth/weak-password") {
           setUserError("Lösenordet måste vara minst 6 tecken.");
         }
-        if (err === "auth/email-already-in-use") {
+        if (err.code === "auth/email-already-in-use") {
           setUserError("Epost-adressen används redan");
         }
-        // setUserError(err);
       } finally {
         setLoading(false);
-        if (!userError) {
+        if (userError !== "") {
           resetInput();
         }
       }
     }
   };
 
-  console.log(userError);
   return (
     <StyledNewUser>
       <SEO
@@ -112,6 +94,11 @@ const NewUser = () => {
             användare bidra med innehåll till Vintage Sverige. Du behöver bara
             fylla i din email och ett lösenord.
           </p>
+          {userError !== "" && (
+            <ErrorContainer>
+              <p>{userError}</p>
+            </ErrorContainer>
+          )}
           <form>
             {/* <Input
               type="text"
@@ -130,7 +117,6 @@ const NewUser = () => {
               onChange={e => setUserEmail(e.target.value)}
             />
             <Input
-              // Change type to password when finished with login-system
               type="password"
               name="password"
               id="password"
@@ -139,7 +125,6 @@ const NewUser = () => {
               onChange={e => setUserPassword(e.target.value)}
             />
             <Input
-              // Change type to password when finished with login-system
               type="password"
               name="password2"
               id="password2"
@@ -147,15 +132,9 @@ const NewUser = () => {
               value={userPassword2}
               onChange={e => setUserPassword2(e.target.value)}
             />
-            {userError && (
-              <ErrorContainer>
-                <p>{userError}</p>
-              </ErrorContainer>
-            )}
             <Button
               type="submit"
               onClick={submitForm}
-              // disabled={isInvalid}
               margin="0 0 1em 0"
               bgColor="var(--secondary-button-color)"
             >
@@ -167,8 +146,6 @@ const NewUser = () => {
           </form>
         </>
       )}
-
-      {/* {userError && <p>{userError.message}</p>} */}
     </StyledNewUser>
   );
 };

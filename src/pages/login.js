@@ -6,6 +6,7 @@ import { useAuth } from "../context/auth";
 import Button from "../components/GlobalComponents/Button";
 import Input from "../components/GlobalComponents/Input";
 import SEO from "../components/GlobalComponents/SEO";
+import ErrorContainer from "../components/GlobalComponents/ErrorContainer";
 
 const StyledLogIn = styled.div`
   display: flex;
@@ -28,7 +29,7 @@ const StyledLoginForm = styled.div`
 const LogIn = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const [userError, setUserError] = useState(null);
+  const [userError, setUserError] = useState("");
   // Do something while loading
   // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
@@ -36,19 +37,19 @@ const LogIn = () => {
   // Get user if logged in
   const { authUser } = useAuth();
 
+  // Reset form after submitting
   const resetForm = () => {
     setUserEmail("");
     setUserPassword("");
     setUserError("");
   };
 
-  // If any fields are empty disable submit-button
-  const isInvalid = userPassword === "" || userEmail === "";
-
+  // Logout
   const logout = () => {
     firebase.auth().signOut();
   };
 
+  // Login, display error in swedish if firebase returns error
   const login = async e => {
     e.preventDefault();
     setLoading(true);
@@ -57,13 +58,21 @@ const LogIn = () => {
       await firebase.auth().signInWithEmailAndPassword(userEmail, userPassword);
       // redirect user?
     } catch (err) {
-      setUserError(err);
+      if (err.code === "auth/invalid-email") {
+        setUserError("Ogiltig epostadress");
+      }
+      if (err.code === "auth/wrong-password") {
+        setUserError("Felaktigt lösenord");
+      }
     } finally {
       setLoading(false);
-      resetForm();
+      if (userError !== "") {
+        resetForm();
+      }
     }
   };
 
+  // Reset password, display error in swedish if firebase returns error
   const resetPassword = async e => {
     e.preventDefault();
     firebase
@@ -73,8 +82,10 @@ const LogIn = () => {
         console.log("Success");
       })
       // eslint-disable-next-line no-unused-vars
-      .catch(function(error) {
-        console.log("not working");
+      .catch(function(err) {
+        if (err.code === "auth/invalid-email") {
+          setUserError("Ogiltig epostadress");
+        }
       });
   };
 
@@ -95,6 +106,11 @@ const LogIn = () => {
       ) : (
         <>
           <h2>Logga in här:</h2>
+          {userError !== "" && (
+            <ErrorContainer>
+              <p>{userError}</p>
+            </ErrorContainer>
+          )}
           <StyledLoginForm>
             <Input
               type="text"
@@ -112,7 +128,7 @@ const LogIn = () => {
               value={userPassword}
               onChange={e => setUserPassword(e.target.value)}
             />
-            <Button type="submit" onClick={login} disabled={isInvalid}>
+            <Button type="submit" onClick={login}>
               Logga in
             </Button>
           </StyledLoginForm>
@@ -123,12 +139,11 @@ const LogIn = () => {
           <h3>
             Glömt lösenord? Fyll i din E-mail och klicka på knappen nedan.
           </h3>
-          <Button type="submit" onClick={resetPassword} disabled={isInvalid}>
+          <Button type="submit" onClick={resetPassword}>
             Återställ lösenord
           </Button>
         </>
       )}
-      {userError && <p>{userError.message}</p>}
     </StyledLogIn>
   );
 };
