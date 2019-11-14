@@ -1,57 +1,41 @@
 import React, { useState, useEffect } from "react";
 // import ReactDOM from "react-dom";
 import styled from "styled-components";
+import { getData } from "../sanityFunctions";
 // import BlockContent from "@sanity/block-content-to-react";
-import { useAuth } from "../context/auth";
+// import sanityClient from "../sanityClient";
 import SEO from "../components/GlobalComponents/SEO";
-
-// const client = require("@sanity/client")({
-//   projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
-//   dataset: "production",
-//   useCdn: true,
-//   token: process.env.REACT_APP_SANITY_TOKEN
-// });
 
 const Styledhome = styled.div``;
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
-  const { authUser } = useAuth();
+
+  // Sanity query
+  const query = '*[_type == "post"]';
 
   // Fetch all posts from Sanity API and setPosts
-  const query = '*[_type == "post"]';
-  const getPosts = async () => {
-    fetch(
-      `https://${process.env.REACT_APP_SANITY_PROJECT_ID}.api.sanity.io/v1/data/query/production?query=${query}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_SANITY_TOKEN}`
-        }
-      }
-    )
-      .then(response => response.json())
-      .then(data =>
-        data.result.forEach(post => {
-          setPosts([...posts, post]);
-        })
-      );
-  };
-
   useEffect(() => {
-    getPosts();
+    const fetchPosts = async () => {
+      const response = await getData(query);
+      setPosts(response);
+    };
+    fetchPosts();
   }, []);
+
+  console.log(posts);
 
   // const serializers = {
   //   types: {
-  //     code: props => (
-  //       <pre data-language={props.node.language}>
-  //         <code>{props.node.code}</code>
+  //     code: node => (
+  //       <pre data-language={node.language}>
+  //         <code>{node.code}</code>
   //       </pre>
   //     )
   //   }
   // };
 
-  // client.fetch('*[_type == "post"][0]').then(post => {
+  // sanityClient.fetch('*[_type == "post"][0]').then(post => {
   //   ReactDOM.render(
   //     <BlockContent blocks={post.body} serializers={serializers} />,
   //     document.getElementById("root")
@@ -66,7 +50,6 @@ const Home = () => {
         url="http://vintagesverige.se/"
       />
       <h2>Startsidan</h2>
-      {authUser ? <h2>Du är inloggad</h2> : <h2>Du är inte inloggad</h2>}
       {posts.map(post => (
         <div key={post.title}>
           <h2>{post.title}</h2>
