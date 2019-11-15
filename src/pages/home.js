@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 // import ReactDOM from "react-dom";
 import styled from "styled-components";
-import { getData } from "../sanityFunctions";
 // import BlockContent from "@sanity/block-content-to-react";
+import { getData } from "../sanityFunctions";
 // import sanityClient from "../sanityClient";
 import SEO from "../components/GlobalComponents/SEO";
+import Post from "../components/Post";
+// import client from "../sanityClient";
 
-const Styledhome = styled.div``;
+const Styledhome = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -35,13 +42,6 @@ const Home = () => {
   //   }
   // };
 
-  // sanityClient.fetch('*[_type == "post"][0]').then(post => {
-  //   ReactDOM.render(
-  //     <BlockContent blocks={post.body} serializers={serializers} />,
-  //     document.getElementById("root")
-  //   );
-  // });
-
   return (
     <Styledhome>
       <SEO
@@ -51,11 +51,14 @@ const Home = () => {
       />
       <h2>Startsidan</h2>
       {posts.map(post => (
-        <div key={post.title}>
-          <h2>{post.title}</h2>
-          <p>Här ska blogg-blockets content loopas ut på nått sätt.</p>
-          <h4>Och här ska det stå vem som skrivit inlägget.</h4>
-        </div>
+        <Post key={post.title} post={post} />
+        // <BlockContent
+        //   key={post.title}
+        //   blocks={post.body}
+        //   serializers={serializers}
+        //   dataset="production"
+        //   projectId={process.env.REACT_APP_SANITY_PROJECT_ID}
+        // />
       ))}
     </Styledhome>
   );
