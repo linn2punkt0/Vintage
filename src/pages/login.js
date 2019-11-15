@@ -106,12 +106,12 @@ const LogIn = () => {
       ) : (
         <>
           <h2>Logga in här:</h2>
-          {userError !== "" && (
-            <ErrorContainer>
-              <p>{userError}</p>
-            </ErrorContainer>
-          )}
           <StyledLoginForm>
+            {userError !== "" && (
+              <ErrorContainer>
+                <p>{userError}</p>
+              </ErrorContainer>
+            )}
             <Input
               type="text"
               name="email"

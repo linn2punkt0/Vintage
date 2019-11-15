@@ -52,7 +52,7 @@ const Nav = () => {
   return (
     <StyledNav>
       <UnderLinedMenu>
-        <NavLink to="/event-och-massor">Events</NavLink>
+        <NavLink to="/event-och-massor">Event</NavLink>
         <NavLink to="/vintageskola">Vintageskola</NavLink>
         <NavLink to="/material-och-kladvard">Material & Klädvård</NavLink>
       </UnderLinedMenu>

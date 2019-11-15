@@ -73,7 +73,7 @@ const Menu = () => {
           />
         </NavLink>
         <NavLink to="/event-och-massor" onClick={() => setMenuIsOpen(false)}>
-          Events
+          Event
         </NavLink>
         <NavLink to="/vintageskola" onClick={() => setMenuIsOpen(false)}>
           Vintageskola

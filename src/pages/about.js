@@ -127,42 +127,27 @@ const About = () => {
       </StyledAboutSiteBlock>
       <h2>Vi som bidrar till Vintage Sverige</h2>
       <StyledContributorsBlock>
-        {// contributors &&
-        contributors.map(contributor => (
-          <StyledContributor key={contributor.name}>
-            {contributor.portrait && (
-              <img src={urlFor(contributor.portrait.asset)} alt="profile" />
-            )}
-            <h3>{contributor.name}</h3>
-            <h4>{contributor.title}</h4>
-            <p>{contributor.personal}</p>
-            <p>
-              {contributor.website && (
-                <a href={contributor.website}>Min webbutvecklar-portfolio</a>
+        {contributors &&
+          contributors.map(contributor => (
+            <StyledContributor key={contributor.name}>
+              {contributor.portrait && (
+                <img src={urlFor(contributor.portrait.asset)} alt="profile" />
               )}
-            </p>
-            <p>
-              {contributor.instagram && (
-                <a href={contributor.instagram}>Min instagram</a>
-              )}
-            </p>
-          </StyledContributor>
-        ))}
-        <StyledContributor>
-          <img src="/images/linn2.jpg" alt="profile" />
-          <h3>Linn Johansson</h3>
-          <h4>Grundare - Webbutvecklare</h4>
-          <p>
-            Linn heter jag, pluggar webbutveckling och älskar
-            vintage-klänningar. Den här hemsidan är mitt examensarbete.
-          </p>
-          <p>
-            <a href="https://linnjohansson.dev/">Min webbutvecklar-portfolio</a>
-          </p>
-          <p>
-            <a href="https://www.instagram.com/linn2.0/">Min instagram</a>
-          </p>
-        </StyledContributor>
+              <h3>{contributor.name}</h3>
+              <h4>{contributor.title}</h4>
+              <p>{contributor.personal}</p>
+              <p>
+                {contributor.website && (
+                  <a href={contributor.website}>Min webbutvecklar-portfolio</a>
+                )}
+              </p>
+              <p>
+                {contributor.instagram && (
+                  <a href={contributor.instagram}>Min instagram</a>
+                )}
+              </p>
+            </StyledContributor>
+          ))}
       </StyledContributorsBlock>
     </StyledAbout>
   );
