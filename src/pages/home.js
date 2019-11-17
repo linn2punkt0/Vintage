@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
-// import ReactDOM from "react-dom";
 import styled from "styled-components";
-// import BlockContent from "@sanity/block-content-to-react";
 import { getData } from "../sanityFunctions";
-// import sanityClient from "../sanityClient";
 import SEO from "../components/GlobalComponents/SEO";
 import Post from "../components/Post";
-// import client from "../sanityClient";
 
 const Styledhome = styled.div`
   display: flex;
@@ -19,7 +15,8 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
 
   // Sanity query
-  const query = '*[_type == "post"]';
+  const query =
+    '*[_type == "post"]|order(_createdAt desc){title, slug, "author": author->name, mainImage, categories, publishedAt, body}|[0...10]';
 
   // Fetch all posts from Sanity API and setPosts
   useEffect(() => {
@@ -31,17 +28,6 @@ const Home = () => {
   }, []);
 
   console.log(posts);
-
-  // const serializers = {
-  //   types: {
-  //     code: node => (
-  //       <pre data-language={node.language}>
-  //         <code>{node.code}</code>
-  //       </pre>
-  //     )
-  //   }
-  // };
-
   return (
     <Styledhome>
       <SEO
@@ -52,13 +38,6 @@ const Home = () => {
       <h2>Startsidan</h2>
       {posts.map(post => (
         <Post key={post.title} post={post} />
-        // <BlockContent
-        //   key={post.title}
-        //   blocks={post.body}
-        //   serializers={serializers}
-        //   dataset="production"
-        //   projectId={process.env.REACT_APP_SANITY_PROJECT_ID}
-        // />
       ))}
     </Styledhome>
   );
