@@ -12,7 +12,12 @@ import SEO from "../components/GlobalComponents/SEO";
 // import Map from "../components/Map";
 import ErrorContainer from "../components/GlobalComponents/ErrorContainer";
 
-const StyledEvents = styled.div``;
+const StyledEvents = styled.div`
+  @media only screen and (min-width: 800px) {
+    width: 60vw;
+    margin: auto;
+  }
+`;
 
 const FilterBlock = styled.div`
   display: flex;

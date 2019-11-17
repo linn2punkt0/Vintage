@@ -64,6 +64,11 @@ const GlobalStyle = createGlobalStyle`
   p {
     font-family: var(--paragraph-font);
   }
+
+  button{
+    border: none;
+    background: none;
+  }
   `;
 
 export default GlobalStyle;

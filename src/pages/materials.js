@@ -2,7 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import SEO from "../components/GlobalComponents/SEO";
 
-const StyledMaterials = styled.div``;
+const StyledMaterials = styled.div`
+  @media only screen and (min-width: 800px) {
+    width: 60vw;
+    margin: auto;
+  }
+`;
 
 const Materials = () => {
   return (

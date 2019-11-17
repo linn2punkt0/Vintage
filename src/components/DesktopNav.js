@@ -35,6 +35,7 @@ const UnderLinedMenu = styled.div`
   align-items: center;
   font-size: 20px;
   text-align: center;
+  margin: 0 10px;
 `;
 
 const LogoutButton = styled.button`

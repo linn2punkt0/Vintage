@@ -5,7 +5,19 @@ import { useAuth } from "../context/auth";
 import AddWiki from "../components/AddWiki";
 import SEO from "../components/GlobalComponents/SEO";
 
-const StyledVintageWiki = styled.div``;
+const StyledVintageWiki = styled.div`
+  @media only screen and (min-width: 800px) {
+    width: 60vw;
+    margin: auto;
+  }
+`;
+const WikiContainer = styled.div`
+  border: solid 1px black;
+  border-radius: 5px;
+  width: 100%;
+  height: 50vh;
+  overflow: scroll;
+`;
 
 const StyledItem = styled.div`
   border: solid 1px black;
@@ -42,14 +54,15 @@ const VintageWiki = () => {
         description="Här kan du lägga till ord och begrepp i vår vintage-ordbok och tillsammans med oss bygga upp en stor kunskapsbank."
         url="http://vintagesverige.se/vintagewiki"
       />
-      <h2>Här kommer det bli en VintageWiki.</h2>
-      {wiki.map(item => (
-        <StyledItem key={item.id}>
-          <h3>{item.name}</h3>
-          <h4>{item.description}</h4>
-        </StyledItem>
-      ))}
-
+      <h2>VintageWiki - Beta</h2>
+      <WikiContainer>
+        {wiki.map(item => (
+          <StyledItem key={item.id}>
+            <h3>{item.name}</h3>
+            <p>{item.description}</p>
+          </StyledItem>
+        ))}
+      </WikiContainer>
       {authUser ? (
         <AddWiki addNewItem={addNewItem} />
       ) : (

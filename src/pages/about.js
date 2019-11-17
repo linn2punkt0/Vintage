@@ -10,6 +10,10 @@ const StyledAbout = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  @media only screen and (min-width: 800px) {
+    width: 60vw;
+    margin: auto;
+  }
 `;
 
 const StyledAboutSiteBlock = styled.div`
@@ -38,7 +42,7 @@ const StyledContributorsBlock = styled.div`
 `;
 
 const StyledContributor = styled.div`
-  width: 30vw;
+  width: 25vw;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -138,7 +142,7 @@ const About = () => {
               <p>{contributor.personal}</p>
               <p>
                 {contributor.website && (
-                  <a href={contributor.website}>Min webbutvecklar-portfolio</a>
+                  <a href={contributor.website}>Min hemsida</a>
                 )}
               </p>
               <p>
