@@ -9,7 +9,7 @@ import RowDiv from "../components/GlobalComponents/RowDiv";
 import CheckBoxInput from "../components/GlobalComponents/CheckBoxInput";
 import Button from "../components/GlobalComponents/Button";
 import SEO from "../components/GlobalComponents/SEO";
-import Map from "../components/Map";
+// import Map from "../components/Map";
 import ErrorContainer from "../components/GlobalComponents/ErrorContainer";
 
 const StyledEvents = styled.div``;
@@ -246,7 +246,7 @@ const Events = () => {
           </FilterBlock>
         </>
       )}
-      <Map events={events} />
+      {/* <Map events={events} /> */}
       <EventContainer>
         {filteredEvents.length > 0
           ? filteredEvents.map(event => (
