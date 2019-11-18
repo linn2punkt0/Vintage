@@ -8,10 +8,6 @@ const StyledPost = styled.div`
   width: 90%;
   border-bottom: solid 1px black;
   margin-bottom: 20px;
-  /* overflow: none; */
-  /* word-wrap: break-word; */
-  /* overflow: hidden;
-  text-overflow: ellipsis; */
 
   img {
     width: 100%;
@@ -23,10 +19,11 @@ const StyledPost = styled.div`
   p {
     width: 100%;
     height: auto;
-    /* overflow: hidden; */
-    /* text-overflow: ellipsis; */
-    /* word-wrap: break-word; */
     padding: 10px;
+  }
+  & > h4 {
+    text-align: right;
+    font-style: italic;
   }
 `;
 
@@ -61,7 +58,7 @@ const Post = ({ post }) => {
         projectId={process.env.REACT_APP_SANITY_PROJECT_ID}
         // imageOptions={{ w: 300, fit: "max" }}
       />
-      <h4>Skrivet av: {post.author}</h4>
+      <h4>Av: {post.author}</h4>
     </StyledPost>
   );
 };

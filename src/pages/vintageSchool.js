@@ -3,9 +3,10 @@ import styled from "styled-components";
 import SEO from "../components/GlobalComponents/SEO";
 
 const StyledVintageSchool = styled.div`
+  width: 90vw;
+  margin: auto;
   @media only screen and (min-width: 800px) {
     width: 60vw;
-    margin: auto;
   }
 `;
 

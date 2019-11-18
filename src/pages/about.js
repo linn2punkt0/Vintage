@@ -6,13 +6,14 @@ import client from "../sanityClient";
 import SEO from "../components/GlobalComponents/SEO";
 
 const StyledAbout = styled.div`
+  width: 90vw;
+  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   @media only screen and (min-width: 800px) {
     width: 60vw;
-    margin: auto;
   }
 `;
 
@@ -22,9 +23,9 @@ const StyledAboutSiteBlock = styled.div`
   justify-content: space-around;
   align-items: center;
   padding: 2em;
-  margin: 2em;
-  border: solid 1px black;
-  border-radius: 5px;
+  /* margin: 2em; */
+  /* border: solid 1px black;
+  border-radius: 5px; */
 `;
 
 const StyledContributorsBlock = styled.div`
@@ -122,9 +123,10 @@ const About = () => {
         url="http://vintagesverige.se/om-vintage-sverige"
       />
 
-      <h2>Om Vintage Sverige</h2>
+      {/* <h2>Om Vintage Sverige</h2> */}
       <StyledAboutSiteBlock>
-        <h3>Om</h3>
+        <h2>Om Vintage Sverige</h2>
+        {/* <h3>Om</h3> */}
         <p>
           Vintage Sverige är en hemsida för dig som älskar Vintage, vill lära
           dig mer om det och hitta event och mässor där du kan njuta av vackra
@@ -136,7 +138,7 @@ const About = () => {
           menyn att ha något innehåll ännu, men finns där för att visa på vad
           som komma skall. I första releasen kommer denna sida ha fokus på att
           ni som användare ska kunna lägga till och hitta event. Det finns även
-          en Beta-version av VitnageWiki, en ordlista för allt som har med
+          en Beta-version av VintageWiki, en ordlista för allt som har med
           Vintage att göra, denna ska förfinas och kommer i framtiden innehålla
           mer än bara en beskrivning om varje ord.
         </p>
@@ -161,12 +163,12 @@ const About = () => {
               <p>{contributor.personal}</p>
               <p>
                 {contributor.website && (
-                  <a href={contributor.website}>Min hemsida</a>
+                  <a href={contributor.website}>Hemsida</a>
                 )}
               </p>
               <p>
                 {contributor.instagram && (
-                  <a href={contributor.instagram}>Min instagram</a>
+                  <a href={contributor.instagram}>Instagram</a>
                 )}
               </p>
             </StyledContributor>

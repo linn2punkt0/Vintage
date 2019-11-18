@@ -13,9 +13,10 @@ import SEO from "../components/GlobalComponents/SEO";
 import ErrorContainer from "../components/GlobalComponents/ErrorContainer";
 
 const StyledEvents = styled.div`
+  width: 90vw;
+  margin: auto;
   @media only screen and (min-width: 800px) {
     width: 60vw;
-    margin: auto;
   }
 `;
 

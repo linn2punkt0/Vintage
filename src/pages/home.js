@@ -5,13 +5,14 @@ import SEO from "../components/GlobalComponents/SEO";
 import Post from "../components/Post";
 
 const Styledhome = styled.div`
+  width: 90vw;
+  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   @media only screen and (min-width: 800px) {
     width: 60vw;
-    margin: auto;
   }
 `;
 
@@ -57,7 +58,6 @@ const Home = () => {
         description="Vintage Sverige är en sida för dig som älskar vintage och vill hjälpa till att samla kunskap på ett ställe. Här kan du tipsa om och leta efter event, mässor, tvättråd m.m."
         url="http://vintagesverige.se/"
       />
-      <h2>Startsidan</h2>
       {posts.map(post => (
         <Post key={post.title} post={post} />
       ))}

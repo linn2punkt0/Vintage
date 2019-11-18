@@ -6,9 +6,10 @@ import AddWiki from "../components/AddWiki";
 import SEO from "../components/GlobalComponents/SEO";
 
 const StyledVintageWiki = styled.div`
+  width: 90vw;
+  margin: auto;
   @media only screen and (min-width: 800px) {
     width: 60vw;
-    margin: auto;
   }
 `;
 const WikiContainer = styled.div`
