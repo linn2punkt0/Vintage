@@ -96,6 +96,8 @@ const Map = ({ events }) => {
               key={event.id}
               latitude={event.location.lat}
               longitude={event.location.lng}
+              offsetLeft={-20}
+              offsetTop={-10}
             >
               <MarkerStyle
                 onClick={() => {
