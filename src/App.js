@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { createBrowserHistory } from "history";
 import ReactGA from "react-ga";
 import Home from "./pages/home";
 import Events from "./pages/events";
@@ -17,7 +18,14 @@ import SEO from "./components/GlobalComponents/SEO";
 
 function App() {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_KEY);
-  ReactGA.pageview(window.location.pathname + window.location.search);
+  // ReactGA.pageview(window.location.pathname + window.location.search);
+
+  const history = createBrowserHistory();
+  // Initialize google analytics page view tracking
+  history.listen(location => {
+    ReactGA.set({ page: location.pathname }); // Update the user's current page
+    ReactGA.pageview(location.pathname); // Record a pageview for the given page
+  });
   return (
     <div className="App">
       <SEO
@@ -27,7 +35,7 @@ function App() {
       />
       <AuthProvider>
         <MenuProvider>
-          <BrowserRouter>
+          <BrowserRouter history={history}>
             <Layout>
               <div>
                 <Switch>
