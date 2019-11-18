@@ -21,7 +21,7 @@ const WikiContainer = styled.div`
 `;
 
 const StyledItem = styled.div`
-  border: solid 1px black;
+  border-bottom: solid 1px black;
 `;
 
 const VintageWiki = () => {

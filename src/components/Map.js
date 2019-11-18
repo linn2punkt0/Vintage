@@ -10,7 +10,7 @@ const StyledMap = styled.div`
 const MarkerStyle = styled.button`
   width: 30px;
   height: 30px;
-  background-color: pink;
+  background-color: #c0dce1;
   border-radius: 50%;
   border: solid 1px black;
   z-index: 200;

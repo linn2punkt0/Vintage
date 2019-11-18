@@ -18,6 +18,10 @@ const StyledEvents = styled.div`
   @media only screen and (min-width: 800px) {
     width: 60vw;
   }
+
+  & > button {
+    margin-bottom: 0.5em;
+  }
 `;
 
 const FilterBlock = styled.div`

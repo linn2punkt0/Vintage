@@ -32,6 +32,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1 {
+    /* font-family:var(--header-font); */
     font-family: var(--title-font);
     font-weight: 600;
   }

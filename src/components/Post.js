@@ -5,21 +5,31 @@ import BlockContent from "@sanity/block-content-to-react";
 import client from "../sanityClient";
 
 const StyledPost = styled.div`
-  width: 90%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border-bottom: solid 1px black;
   margin-bottom: 20px;
 
-  img {
+  & > div {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  img {
+    width: 90vw;
     @media only screen and (min-width: 800px) {
       width: 600px;
     }
   }
 
   p {
-    width: 100%;
+    width: 90%;
     height: auto;
-    padding: 10px;
+    /* padding: 10px; */
   }
   & > h4 {
     text-align: right;

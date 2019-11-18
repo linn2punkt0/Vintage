@@ -3,7 +3,7 @@ import styled from "styled-components";
 // import { start } from "repl";
 
 const StyledEventOverview = styled.div`
-  border: solid 1px black;
+  border-bottom: solid 1px black;
 `;
 
 const EventOverview = event => {
