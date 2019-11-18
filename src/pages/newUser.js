@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import firebase from "../firebase";
 import { useAuth } from "../context/auth";
 import Button from "../components/GlobalComponents/Button";
@@ -9,6 +9,8 @@ import SEO from "../components/GlobalComponents/SEO";
 import ErrorContainer from "../components/GlobalComponents/ErrorContainer";
 
 const StyledNewUser = styled.div`
+  width: 90vw;
+  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17,6 +19,9 @@ const StyledNewUser = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  @media only screen and (min-width: 800px) {
+    width: 60vw;
   }
 `;
 
@@ -27,6 +32,8 @@ const NewUser = () => {
   const [userPassword2, setUserPassword2] = useState("");
   // const [username, setUsername] = useState("");
   const [userError, setUserError] = useState("");
+
+  const [redirect, setRedirect] = useState(false);
 
   // Do something while loading
   // eslint-disable-next-line no-unused-vars
@@ -56,7 +63,8 @@ const NewUser = () => {
         await firebase
           .auth()
           .createUserWithEmailAndPassword(userEmail, userPassword);
-        // redirect user?
+        // redirect user
+        setRedirect(true);
       } catch (err) {
         if (err.code === "auth/invalid-email") {
           setUserError("Ogiltig epostadress");
@@ -75,6 +83,10 @@ const NewUser = () => {
       }
     }
   };
+
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <StyledNewUser>

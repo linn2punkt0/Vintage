@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import firebase from "../firebase";
 import { useAuth } from "../context/auth";
 import Button from "../components/GlobalComponents/Button";
@@ -9,10 +9,15 @@ import SEO from "../components/GlobalComponents/SEO";
 import ErrorContainer from "../components/GlobalComponents/ErrorContainer";
 
 const StyledLogIn = styled.div`
+  width: 90vw;
+  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media only screen and (min-width: 800px) {
+    width: 60vw;
+  }
 `;
 
 const StyledLoginForm = styled.div`
@@ -30,6 +35,7 @@ const LogIn = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userError, setUserError] = useState("");
+  const [redirect, setRedirect] = useState(false);
   // Do something while loading
   // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
@@ -47,6 +53,7 @@ const LogIn = () => {
   // Logout
   const logout = () => {
     firebase.auth().signOut();
+    resetForm();
   };
 
   // Login, display error in swedish if firebase returns error
@@ -56,7 +63,8 @@ const LogIn = () => {
     setUserError(null);
     try {
       await firebase.auth().signInWithEmailAndPassword(userEmail, userPassword);
-      // redirect user?
+      // redirect user
+      setRedirect(true);
     } catch (err) {
       if (err.code === "auth/invalid-email") {
         setUserError("Ogiltig epostadress");
@@ -88,6 +96,10 @@ const LogIn = () => {
         }
       });
   };
+
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <StyledLogIn>
