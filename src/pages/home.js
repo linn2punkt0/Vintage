@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { getData } from "../sanityFunctions";
+// import { getData } from "../sanityFunctions";
 import SEO from "../components/GlobalComponents/SEO";
 import Post from "../components/Post";
 
@@ -23,12 +23,31 @@ const Home = () => {
     '*[_type == "post"]|order(_createdAt desc){title, slug, "author": author->name, mainImage, categories, publishedAt, body}|[0...10]';
 
   // Fetch all posts from Sanity API and setPosts
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     const response = await getData(query);
+  //     setPosts(response);
+  //   };
+  //   fetchPosts();
+  // }, []);
+
+  // Get Sanity Posts via netlify functions
+  const getPosts = () => {
+    const tempArray = [];
+    fetch(`/.netlify/functions/sanity?input=${query}`, {
+      headers: { accept: "Accept: application/json" }
+    })
+      .then(response => response.json())
+      .then(data => {
+        data.msg.result.forEach(post => {
+          tempArray.push(post);
+        });
+        setPosts([...tempArray]);
+      });
+  };
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await getData(query);
-      setPosts(response);
-    };
-    fetchPosts();
+    getPosts();
   }, []);
 
   return (

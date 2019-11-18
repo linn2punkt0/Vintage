@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import imageUrlBuilder from "@sanity/image-url";
 import client from "../sanityClient";
-import { getData } from "../sanityFunctions";
+// import { getData } from "../sanityFunctions";
 import SEO from "../components/GlobalComponents/SEO";
 
 const StyledAbout = styled.div`
@@ -87,12 +87,31 @@ const About = () => {
   const query = '*[_type == "contributors"]';
 
   // Fetch all contributors from Sanity API and setContributor
+  // useEffect(() => {
+  //   const fetchContributors = async () => {
+  //     const response = await getData(query);
+  //     setContributors(response);
+  //   };
+  //   fetchContributors();
+  // }, []);
+
+  // Get Sanity Posts via netlify functions
+  const getContributors = () => {
+    const tempArray = [];
+    fetch(`/.netlify/functions/sanity?input=${query}`, {
+      headers: { accept: "Accept: application/json" }
+    })
+      .then(response => response.json())
+      .then(data => {
+        data.msg.result.forEach(contributor => {
+          tempArray.push(contributor);
+        });
+        setContributors([...tempArray]);
+      });
+  };
+
   useEffect(() => {
-    const fetchContributors = async () => {
-      const response = await getData(query);
-      setContributors(response);
-    };
-    fetchContributors();
+    getContributors();
   }, []);
 
   return (

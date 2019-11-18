@@ -15,6 +15,7 @@
     "react-dom": "^16.11.0",
     "react-headroom": "^3.0.0",
     "react-helmet": "^5.2.1",
+    "react-map-gl": "^5.1.2",
     "react-mapbox-gl": "^4.7.3",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.2.0",
