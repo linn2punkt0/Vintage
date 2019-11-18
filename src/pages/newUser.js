@@ -148,7 +148,7 @@ const NewUser = () => {
               type="submit"
               onClick={submitForm}
               margin="0 0 1em 0"
-              bgColor="var(--secondary-button-color)"
+              // bgColor="var(--secondary-button-color)"
             >
               Registrera ny användare
             </Button>

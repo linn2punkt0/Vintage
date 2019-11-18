@@ -35,8 +35,8 @@ const StyledContributorsBlock = styled.div`
   align-items: center;
   padding: 2em;
   margin: 2em;
-  border: solid 1px black;
-  border-radius: 5px;
+  /* border: solid 1px black;
+  border-radius: 5px; */
   @media only screen and (max-width: 800px) {
     flex-direction: column;
   }
@@ -49,8 +49,9 @@ const StyledContributor = styled.div`
   justify-content: space-around;
   align-items: center;
   padding: 1em;
-  border: solid 1px black;
+  /* border: solid 1px black; */
   border-radius: 5px;
+  box-shadow: 0px 0px 3px 3px lightgrey;
   @media only screen and (max-width: 800px) {
     width: 100%;
   }

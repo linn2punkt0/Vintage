@@ -11,6 +11,9 @@ const StyledButton = styled.button`
   font-weight: 600;
   border: none;
   margin: ${({ margin }) => margin || "0"};
+  @media only screen and (max-width: 800px) {
+    width: 35vw;
+  }
 
   -webkit-transform: skew(-20deg);
   -moz-transform: skew(-20deg);
