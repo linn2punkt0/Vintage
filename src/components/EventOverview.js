@@ -43,9 +43,11 @@ const EventOverview = event => {
           <h4>Plats: {data.address.description}</h4>
           <h4>Stad: {data.city}</h4>
           <p>{data.description}</p>
-          <h4>
-            Extern länk: <a href={data.link}>{data.link}</a>
-          </h4>
+          {data.link !== "" && (
+            <h4>
+              Extern länk: <a href={data.link}>{data.link}</a>
+            </h4>
+          )}
           <button type="button" onClick={() => setExpanded(false)}>
             Visa mindre
           </button>
