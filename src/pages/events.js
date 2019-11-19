@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 import { getAllStartData, getFilteredEvents } from "../firebaseFunctions";
 import { useAuth } from "../context/auth";
 import EventOverview from "../components/EventOverview";
@@ -282,7 +283,9 @@ const Events = () => {
         />
       ) : (
         <LogInBlock>
-          <h4>Logga in för att kunna lägga till nya events.</h4>
+          <NavLink to="/logga-in">
+            <h4>Logga in för att kunna lägga till nya events.</h4>
+          </NavLink>
         </LogInBlock>
       )}
     </StyledEvents>

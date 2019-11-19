@@ -149,9 +149,9 @@ const LogIn = () => {
             <Button type="button">Ny användare</Button>
           </Link>
           <h3>
-            Glömt lösenord? Fyll i din E-mail och klicka på knappen nedan.
+            Glömt lösenord? Fyll i din E-mail ovan och klicka på knappen nedan.
           </h3>
-          <Button type="submit" onClick={resetPassword}>
+          <Button margin="0 0 10px 0" type="submit" onClick={resetPassword}>
             Återställ lösenord
           </Button>
         </>

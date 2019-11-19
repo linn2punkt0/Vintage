@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const StyledLogInBlock = styled.div`
+const StyledLogInBlock = styled.button`
   width: 90%;
   height: 50px;
   display: flex;
@@ -12,6 +12,11 @@ const StyledLogInBlock = styled.div`
   color: var(--light-text-color);
   border-radius: 5px;
   margin: 10px 0;
+  border: none;
+
+  & > a {
+    text-decoration: none;
+  }
 `;
 
 const LogInBlock = ({ children }) => {

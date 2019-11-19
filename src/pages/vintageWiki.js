@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 import app from "../firebase";
 import { useAuth } from "../context/auth";
 import AddWiki from "../components/AddWiki";
 import SEO from "../components/GlobalComponents/SEO";
+import LogInBlock from "../components/GlobalComponents/LogInBlock";
 
 const StyledVintageWiki = styled.div`
   width: 90vw;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   @media only screen and (min-width: 800px) {
     width: 60vw;
   }
@@ -67,7 +73,11 @@ const VintageWiki = () => {
       {authUser ? (
         <AddWiki addNewItem={addNewItem} />
       ) : (
-        <h4>Logga in för att kunna lägga till nya ord i VintageWikin.</h4>
+        <LogInBlock>
+          <NavLink to="/logga-in">
+            <h4>Logga in för att kunna lägga till nya ord i VintageWikin.</h4>
+          </NavLink>
+        </LogInBlock>
       )}
     </StyledVintageWiki>
   );

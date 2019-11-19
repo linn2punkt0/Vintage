@@ -29,6 +29,7 @@ const StyledAboutSiteBlock = styled.div`
 `;
 
 const StyledContributorsBlock = styled.div`
+  height: 600px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -44,11 +45,13 @@ const StyledContributorsBlock = styled.div`
 
 const StyledContributor = styled.div`
   width: 25vw;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   align-items: center;
   padding: 1em;
+  margin: 0 10px;
   /* border: solid 1px black; */
   border-radius: 5px;
   box-shadow: 0px 0px 3px 3px lightgrey;
@@ -58,13 +61,15 @@ const StyledContributor = styled.div`
 
   img {
     width: 200px;
+    height: 200px;
     border-radius: 50%;
+    object-fit: cover;
   }
   h3 {
     margin: 0.5em;
   }
   > * {
-    margin: 0.2em;
+    margin: 0.4em;
   }
   a {
     font-weight: 600;
@@ -86,7 +91,7 @@ const About = () => {
   }
 
   // Sanity query
-  const query = '*[_type == "contributors"]';
+  const query = '*[_type == "contributors"]|order(_createdAt asc)';
 
   // Fetch all contributors from Sanity API and setContributor
   // useEffect(() => {
