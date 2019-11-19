@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ReactMapGL, { Marker } from "react-map-gl";
 
 const StyledMap = styled.div`
+  width: 100%;
   /* position: relative; */
   /* padding: 10px; */
 `;
