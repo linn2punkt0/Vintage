@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { createBrowserHistory } from "history";
@@ -17,14 +17,9 @@ import { MenuProvider } from "./context/menu";
 import SEO from "./components/GlobalComponents/SEO";
 
 function App() {
-  useEffect(() => {
-    ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_KEY);
-  }, []);
-  // ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_KEY);
-  // ReactGA.pageview(window.location.pathname + window.location.search);
+  ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_KEY);
 
   const history = createBrowserHistory();
-  // Initialize google analytics page view tracking
   history.listen(location => {
     ReactGA.set({ page: location.pathname }); // Update the user's current page
     ReactGA.pageview(location.pathname); // Record a pageview for the given page

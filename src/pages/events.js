@@ -11,10 +11,15 @@ import Button from "../components/GlobalComponents/Button";
 import SEO from "../components/GlobalComponents/SEO";
 import Map from "../components/Map";
 import ErrorContainer from "../components/GlobalComponents/ErrorContainer";
+import LogInBlock from "../components/GlobalComponents/LogInBlock";
 
 const StyledEvents = styled.div`
   width: 90vw;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   @media only screen and (min-width: 800px) {
     width: 60vw;
   }
@@ -46,7 +51,8 @@ const FilterBlock = styled.div`
 `;
 
 const EventContainer = styled.div`
-  margin: 20px;
+  /* margin: 20px; */
+  width: 100%;
   max-height: 60vh;
   overflow: scroll;
   border: solid 1px black;
@@ -275,7 +281,9 @@ const Events = () => {
           reloadEvents={reloadEvents}
         />
       ) : (
-        <h4>Logga in för att kunna lägga till nya events.</h4>
+        <LogInBlock>
+          <h4>Logga in för att kunna lägga till nya events.</h4>
+        </LogInBlock>
       )}
     </StyledEvents>
   );
