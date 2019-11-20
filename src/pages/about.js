@@ -29,7 +29,7 @@ const StyledAboutSiteBlock = styled.div`
 `;
 
 const StyledContributorsBlock = styled.div`
-  height: 600px;
+  /* height: 600px; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -45,13 +45,13 @@ const StyledContributorsBlock = styled.div`
 
 const StyledContributor = styled.div`
   width: 25vw;
-  height: 100%;
+  height: 500px;
   display: flex;
   flex-direction: column;
   /* justify-content: space-around; */
   align-items: center;
   padding: 1em;
-  margin: 0 10px;
+  margin: 10px;
   /* border: solid 1px black; */
   border-radius: 5px;
   box-shadow: 0px 0px 3px 3px lightgrey;
