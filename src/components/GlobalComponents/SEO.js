@@ -12,14 +12,14 @@ const SEO = ({ title, description, url }) => {
         {/* Facebook meta */}
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:image" content="/images/logoTest4.png" />
+        <meta property="og:image" content="/images/seo-image.png" />
         <meta property="og:url" content={url} />
 
         {/* Twitter meta */}
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:url" content={url} />
-        <meta name="twitter:image" content="/images/logoTest4.png" />
+        <meta name="twitter:image" content="/images/seo-image.png" />
 
         {/* standard meta */}
         <meta property="title" content={title} />

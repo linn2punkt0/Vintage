@@ -28,7 +28,7 @@ const MobileNav = () => {
   return (
     <StyledNav>
       <NavLink to="/">
-        <StyledLogo src="/images/LogoTest4.png" alt="logo" />
+        <StyledLogo src="/images/Logo.png" alt="logo" />
       </NavLink>
       <Burger />
     </StyledNav>

@@ -68,7 +68,7 @@ const Menu = () => {
       <div>
         <NavLink to="/" onClick={() => setMenuIsOpen(false)}>
           <StyledLogo
-            src={menuIsOpen ? "/images/LogoWhite.png" : "/images/LogoTest4.png"}
+            src={menuIsOpen ? "/images/LogoWhite.png" : "/images/Logo.png"}
             alt="logo"
           />
         </NavLink>
