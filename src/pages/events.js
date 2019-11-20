@@ -37,6 +37,7 @@ const FilterBlock = styled.div`
   align-items: center;
   border: solid 1px black;
   border-radius: 5px;
+  margin-bottom: 10px;
 
   div > select {
     min-height: 40px;

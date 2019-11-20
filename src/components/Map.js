@@ -93,19 +93,21 @@ const Map = ({ events }) => {
                 </button>
               </EventDisplay>
             )}
-            <Marker
-              key={event.id}
-              latitude={event.location.lat}
-              longitude={event.location.lng}
-              offsetLeft={-20}
-              offsetTop={-10}
-            >
-              <MarkerStyle
-                onClick={() => {
-                  setDisplayEvent(event);
-                }}
-              />
-            </Marker>
+            {event.location !== "" && (
+              <Marker
+                key={event.id}
+                latitude={event.location.lat}
+                longitude={event.location.lng}
+                offsetLeft={-20}
+                offsetTop={-10}
+              >
+                <MarkerStyle
+                  onClick={() => {
+                    setDisplayEvent(event);
+                  }}
+                />
+              </Marker>
+            )}
           </>
         ))}
       </ReactMapGL>
