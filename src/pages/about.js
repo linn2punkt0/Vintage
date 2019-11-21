@@ -162,7 +162,10 @@ const About = () => {
           contributors.map(contributor => (
             <StyledContributor key={contributor.name}>
               {contributor.portrait && (
-                <img src={urlFor(contributor.portrait.asset)} alt="profile" />
+                <img
+                  src={urlFor(contributor.portrait.asset).size(200, 200)}
+                  alt="profile"
+                />
               )}
               <h3>{contributor.name}</h3>
               <h4>{contributor.title}</h4>

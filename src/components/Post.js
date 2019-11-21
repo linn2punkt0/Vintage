@@ -59,7 +59,9 @@ const Post = ({ post }) => {
   return (
     <StyledPost>
       <h2>{post.title}</h2>
-      {post.mainImage && <img src={urlFor(post.mainImage.asset)} alt="Main" />}
+      {post.mainImage && (
+        <img src={urlFor(post.mainImage.asset).width(600)} alt="Main" />
+      )}
       <BlockContent
         key={post.title}
         blocks={post.body}
